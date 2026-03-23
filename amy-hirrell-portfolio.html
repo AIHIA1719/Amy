@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amy Hirrell — Lead Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F4F0;
+      --ink: #0D0D0B;
+      --muted: #7A7870;
+      --border: #DDDAD4;
+      --accent: #FF4500;
+      --white: #FFFFFF;
+      --card-bg: #ECEAE4;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(245,244,240,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--border); }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 18px; font-weight: 300;
+      text-decoration: none; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 13px; letter-spacing: 0.06em;
+      text-decoration: none; color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-avail {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; color: var(--muted); letter-spacing: 0.04em;
+    }
+    .avail-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(1.3); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 48px 64px;
+    }
+    .hero-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.9s 0.2s forwards;
+    }
+    .hero-role {
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-location {
+      font-size: 12px; letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .hero-headline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(64px, 9.5vw, 148px);
+      font-weight: 200; line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin-bottom: 0;
+      opacity: 0; animation: fadeUp 1s 0.4s forwards;
+    }
+    .hero-headline .line2 { padding-left: 18vw; }
+    .hero-headline em { font-style: italic; }
+
+    .hero-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-top: 48px;
+      opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+    }
+    .hero-desc {
+      max-width: 400px; font-size: 15px;
+      color: var(--muted); line-height: 1.8;
+    }
+    .hero-scroll-cta {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s, gap 0.3s;
+    }
+    .hero-scroll-cta:hover { color: var(--ink); gap: 20px; }
+    .hero-scroll-cta svg { transition: transform 0.3s; }
+    .hero-scroll-cta:hover svg { transform: translateY(4px); }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 14px 0; background: var(--white);
+    }
+    .marquee-track {
+      display: flex; gap: 48px; white-space: nowrap;
+      animation: marquee 24s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); flex-shrink: 0;
+    }
+    .marquee-track .accent { color: var(--accent); font-style: normal; }
+
+    /* ── WORK ── */
+    .work { padding: 96px 48px; }
+    .work-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 64px;
+    }
+    .work-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(36px, 4vw, 56px); font-weight: 300;
+      letter-spacing: -0.02em; line-height: 1.05;
+    }
+    .work-title em { font-style: italic; }
+    .work-count {
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .case-list { display: flex; flex-direction: column; gap: 0; }
+    .case-item {
+      display: grid; grid-template-columns: 80px 1fr 420px;
+      gap: 0 40px; align-items: center;
+      padding: 36px 0; border-top: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .case-item:last-child { border-bottom: 1px solid var(--border); }
+    .case-item:hover { background: rgba(255,255,255,0.6); margin: 0 -48px; padding-left: 48px; padding-right: 48px; }
+    .case-num {
+      font-family: 'Fraunces', serif; font-size: 13px; font-weight: 300;
+      color: var(--muted); font-style: italic;
+    }
+    .case-main { }
+    .case-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .case-tag {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 4px 10px; border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .case-name {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 3vw, 42px); font-weight: 300;
+      letter-spacing: -0.02em; line-height: 1.1;
+    }
+    .case-name em { font-style: italic; }
+    .case-preview {
+      aspect-ratio: 16/9; overflow: hidden; background: var(--card-bg);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .case-preview-inner {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .case-item:hover .case-preview-inner { transform: scale(1.04); }
+    .preview-label {
+      font-family: 'Fraunces', serif; font-size: 22px; font-style: italic;
+      font-weight: 300; color: rgba(0,0,0,0.2);
+    }
+    /* Case preview colour accents */
+    .cs1 { background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%); }
+    .cs1 .preview-label { color: rgba(255,255,255,0.25); }
+    .cs2 { background: linear-gradient(135deg, #F0EBE3 0%, #E0D9CE 100%); }
+    .cs3 { background: linear-gradient(135deg, #0D1F2D 0%, #1A3545 100%); }
+    .cs3 .preview-label { color: rgba(255,255,255,0.2); }
+    .cs4 { background: linear-gradient(135deg, #F5F0E8 0%, #EAE3D6 100%); }
+
+    .case-arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-top: 16px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .case-item:hover .case-arrow { opacity: 1; }
+
+    /* ── ABOUT ── */
+    .about { padding: 96px 48px; background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .about-left { }
+    .about-eyebrow {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+    }
+    .about-heading {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 4vw, 52px); font-weight: 300;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 32px;
+    }
+    .about-heading em { font-style: italic; }
+    .about-body { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 24px; }
+    .about-body strong { color: var(--ink); font-weight: 500; }
+    .about-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 13px; letter-spacing: 0.08em;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+      transition: gap 0.25s;
+    }
+    .about-link:hover { gap: 16px; }
+
+    .about-right { }
+    .skills-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--border); border: 1px solid var(--border);
+    }
+    .skill-card {
+      background: var(--bg); padding: 28px 24px;
+      transition: background 0.2s;
+    }
+    .skill-card:hover { background: #fff; }
+    .skill-icon {
+      font-size: 20px; margin-bottom: 12px;
+    }
+    .skill-name {
+      font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300;
+      margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .skill-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── PROCESS ── */
+    .process { padding: 96px 48px; }
+    .process-eyebrow {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 20px;
+    }
+    .process-heading {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 4vw, 52px); font-weight: 300;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 64px;
+    }
+    .process-heading em { font-style: italic; }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    }
+    .process-step {
+      padding: 40px 32px 40px 0; border-right: 1px solid var(--border);
+      padding-right: 32px; margin-right: 0;
+    }
+    .process-step:last-child { border-right: none; padding-right: 0; }
+    .step-num {
+      font-family: 'Fraunces', serif; font-size: 48px; font-weight: 200;
+      font-style: italic; color: var(--border); line-height: 1;
+      margin-bottom: 20px;
+    }
+    .step-name {
+      font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300;
+      margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    .process-step:nth-child(n+2) { padding-left: 32px; }
+
+    /* ── CONTACT ── */
+    .contact {
+      padding: 96px 48px;
+      background: var(--ink); color: var(--bg);
+    }
+    .contact-inner { max-width: 860px; }
+    .contact-eyebrow {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,244,240,0.4); margin-bottom: 20px;
+    }
+    .contact-heading {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(48px, 7vw, 104px); font-weight: 200;
+      letter-spacing: -0.03em; line-height: 0.95;
+      margin-bottom: 40px;
+    }
+    .contact-heading em { font-style: italic; color: rgba(245,244,240,0.5); }
+    .contact-sub {
+      font-size: 16px; color: rgba(245,244,240,0.55);
+      max-width: 440px; line-height: 1.8; margin-bottom: 48px;
+    }
+    .contact-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-light {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 32px; background: var(--bg); color: var(--ink);
+      text-decoration: none; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: background 0.2s, gap 0.25s;
+    }
+    .btn-light:hover { background: #e8e7e3; gap: 16px; }
+    .btn-outline-light {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 32px; border: 1px solid rgba(245,244,240,0.25); color: var(--bg);
+      text-decoration: none; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: border-color 0.2s, gap 0.25s;
+    }
+    .btn-outline-light:hover { border-color: var(--bg); gap: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); padding: 24px 48px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif; font-size: 16px; font-weight: 300;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
+    .footer-social { display: flex; gap: 24px; }
+    .footer-social a {
+      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: rgba(255,255,255,0.35);
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: #fff; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 0 24px 56px; }
+      .hero-headline .line2 { padding-left: 0; }
+      .work, .about, .process, .contact, footer { padding-left: 24px; padding-right: 24px; }
+      .case-item { grid-template-columns: 1fr; }
+      .case-preview { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step:nth-child(2n) { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="nav-logo" href="index.html">Amy Hirrell</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <span class="nav-avail">
+          <span class="avail-dot"></span> Open to opportunities
+        </span>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-top">
+      <span class="hero-role">Lead UI &amp; Product Designer · Sky</span>
+      <span class="hero-location">London, UK · 20+ years experience</span>
+    </div>
+    <h1 class="hero-headline">
+      <span class="line1">Amy</span><br>
+      <span class="line2"><em>Hirrell</em></span>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        20+ years designing human-centred products that move the needle — from TV and connected home to design systems, mobile, and beyond. Currently Lead UI Designer at Sky.
+      </p>
+      <a href="#work" class="hero-scroll-cta">
+        Selected work
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2v12M2 8l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Product Strategy</span><span class="accent"> / </span>
+      <span>User Research</span><span class="accent"> / </span>
+      <span>Interaction Design</span><span class="accent"> / </span>
+      <span>Design Systems</span><span class="accent"> / </span>
+      <span>Prototyping</span><span class="accent"> / </span>
+      <span>Cross-functional Leadership</span><span class="accent"> / </span>
+      <span>Figma</span><span class="accent"> / </span>
+      <span>Accessibility</span><span class="accent"> / </span>
+      <span>0→1 Product Design</span><span class="accent"> / </span>
+      <span>Product Strategy</span><span class="accent"> / </span>
+      <span>User Research</span><span class="accent"> / </span>
+      <span>Interaction Design</span><span class="accent"> / </span>
+      <span>Design Systems</span><span class="accent"> / </span>
+      <span>Prototyping</span><span class="accent"> / </span>
+      <span>Cross-functional Leadership</span><span class="accent"> / </span>
+      <span>Figma</span><span class="accent"> / </span>
+      <span>Accessibility</span><span class="accent"> / </span>
+      <span>0→1 Product Design</span><span class="accent"> / </span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="work" id="work">
+    <div class="work-header reveal">
+      <h2 class="work-title">Selected<br><em>Case Studies</em></h2>
+      <span class="work-count">04 projects</span>
+    </div>
+
+    <div class="case-list">
+      <!-- Case 1 -->
+      <a href="cs-playlist.html" class="case-item reveal">
+        <span class="case-num">01</span>
+        <div class="case-main">
+          <div class="case-tags">
+            <span class="case-tag">Product Design</span>
+            <span class="case-tag">User Research</span>
+            <span class="case-tag">Sky Glass · TV Platform</span>
+          </div>
+          <h3 class="case-name">Playlist —<br><em>Curating the household TV experience</em></h3>
+          <span class="case-arrow">View case study →</span>
+        </div>
+        <div class="case-preview cs1">
+          <div class="case-preview-inner">
+            <img src="assets/playlist/personal-playlist.png" alt="Sky Glass Playlist — Rosie's Personal Playlist screen on a TV in a living room" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transform:scale(1.1);" />
+          </div>
+        </div>
+      </a>
+
+      <!-- Case 2 -->
+      <a href="cs-design-system.html" class="case-item reveal">
+        <span class="case-num">02</span>
+        <div class="case-main">
+          <div class="case-tags">
+            <span class="case-tag">Design System</span>
+            <span class="case-tag">Pattern Library</span>
+            <span class="case-tag">Award-winning</span>
+          </div>
+          <h3 class="case-name">Foundations —<br><em>British Gas pattern library</em></h3>
+          <span class="case-arrow">View case study →</span>
+        </div>
+        <div class="case-preview cs2">
+          <div class="case-preview-inner">
+            <span class="preview-label">Foundations</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Case 3 -->
+      <a href="cs-onboarding.html" class="case-item reveal">
+        <span class="case-num">03</span>
+        <div class="case-main">
+          <div class="case-tags">
+            <span class="case-tag">TV Platform</span>
+            <span class="case-tag">Connected Home</span>
+            <span class="case-tag">Sky Q</span>
+          </div>
+          <h3 class="case-name">Sky Q —<br><em>Reimagining the TV experience</em></h3>
+          <span class="case-arrow">View case study →</span>
+        </div>
+        <div class="case-preview cs3">
+          <div class="case-preview-inner">
+            <span class="preview-label">First Mile</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Case 4 -->
+      <a href="cs-insights.html" class="case-item reveal">
+        <span class="case-num">04</span>
+        <div class="case-main">
+          <div class="case-tags">
+            <span class="case-tag">Energy · Digital</span>
+            <span class="case-tag">Mobile · Responsive</span>
+            <span class="case-tag">Hive · British Gas</span>
+          </div>
+          <h3 class="case-name">Hive —<br><em>Smart home design at scale</em></h3>
+          <span class="case-arrow">View case study →</span>
+        </div>
+        <div class="case-preview cs4">
+          <div class="case-preview-inner">
+            <span class="preview-label">Pulse</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="about-eyebrow">About me</p>
+        <h2 class="about-heading">Design that's <em>felt</em>,<br>not just seen</h2>
+        <p class="about-body">
+          I'm Amy — a <strong>Lead Product Designer with 20+ years of experience</strong> spanning TV, responsive web, app, motion, branding, illustration, and everything in between. I bring rigour to research, clarity to strategy, and real craft to every screen I ship.
+        </p>
+        <p class="about-body">
+          Currently <strong>Lead UI Designer at Sky</strong> (10+ years), where I've helped shape products used by millions — including Sky Q. Previous work includes British Gas, Hive, DDB Bahrain, and contract work for the London Transport Museum, Disney, Boots, and Sainsbury's Energy.
+        </p>
+        <p class="about-body">
+          I won a <strong>British Gas IS Award</strong> for creating their first responsive Digital Style Guide and Pattern Library. I design with empathy and deliver with impact.
+        </p>
+        <br />
+        <a href="https://www.linkedin.com/in/amy-hirrell" target="_blank" class="about-link">
+          View LinkedIn profile →
+        </a>
+      </div>
+      <div class="reveal">
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon">◎</div>
+            <p class="skill-name">Strategy</p>
+            <p class="skill-desc">Turning ambiguous problems into clear design direction. Comfortable at the product strategy table.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">⬡</div>
+            <p class="skill-name">Research</p>
+            <p class="skill-desc">Mixed-methods: generative & evaluative. I interview, I test, I synthesise — and I make it count.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">△</div>
+            <p class="skill-name">Systems</p>
+            <p class="skill-desc">Built and scaled design systems from scratch. Tokens, components, governance, documentation.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">✦</div>
+            <p class="skill-name">Craft</p>
+            <p class="skill-desc">Pixel-precise when it matters. Figma power user. Prototypes that feel like the real thing.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">◈</div>
+            <p class="skill-name">Leadership</p>
+            <p class="skill-desc">Mentoring junior designers, running design reviews, embedding design culture across teams.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">⊕</div>
+            <p class="skill-name">Collaboration</p>
+            <p class="skill-desc">Engineering, product, data, marketing — I speak all the languages and make cross-functional work sing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <p class="process-eyebrow reveal">How I work</p>
+    <h2 class="process-heading reveal">A process built for<br><em>real-world complexity</em></h2>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <p class="step-num">01</p>
+        <h3 class="step-name">Discover</h3>
+        <p class="step-desc">I start with the problem, not the solution. User interviews, competitor analysis, data deep-dives, and stakeholder alignment to build a shared picture of what we're actually solving.</p>
+      </div>
+      <div class="process-step reveal">
+        <p class="step-num">02</p>
+        <h3 class="step-name">Define</h3>
+        <p class="step-desc">Synthesis into clear problem statements, opportunity areas, and design principles. Prioritisation frameworks to focus on the highest-impact work first.</p>
+      </div>
+      <div class="process-step reveal">
+        <p class="step-num">03</p>
+        <h3 class="step-name">Design</h3>
+        <p class="step-desc">Rapid conceptual sketches through to high-fidelity prototypes. Iteration with users at every stage. Accessibility, edge cases, and engineering constraints baked in from day one.</p>
+      </div>
+      <div class="process-step reveal">
+        <p class="step-num">04</p>
+        <h3 class="step-name">Deliver</h3>
+        <p class="step-desc">Close collaboration with engineering through to launch. Post-launch measurement, iteration cycles, and building on what we learn to make each release better than the last.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-inner reveal">
+      <p class="contact-eyebrow">Get in touch</p>
+      <h2 class="contact-heading">Let's build<br>something <em>together</em></h2>
+      <p class="contact-sub">I'm open to senior product design roles, consulting engagements, and design leadership opportunities.</p>
+      <div class="contact-actions">
+        <a href="mailto:amy@amyhirrell.com" class="btn-light">Say hello →</a>
+        <a href="https://www.linkedin.com/in/amy-hirrell" target="_blank" class="btn-outline-light">LinkedIn →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Amy Hirrell</span>
+    <span class="footer-copy">© 2025 · Lead Product Designer</span>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/in/amy-hirrell" target="_blank">LinkedIn</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

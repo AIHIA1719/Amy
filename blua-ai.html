@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blua AI — Health Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #273F7E;
+      --blue-dark: #1A2F63;
+      --blue-navy: #0F2460;
+      --blue-accent: #4A8EC4;
+      --blue-soft: #EEF2FA;
+      --blue-mid: #D4DFEF;
+      --teal: #4A8EC4;
+      --teal-light: #E5EFF8;
+      --white: #FFFFFF;
+      --bg: #F5F7FB;
+      --border: #DDE3EF;
+      --ink: #0F2460;
+      --muted: #6B7280;
+      --muted-light: #8F9BBF;
+      --bubble-user: #273F7E;
+      --bubble-ai: #EEF2FA;
+      --danger-soft: #FEF3E8;
+      --danger: #D97706;
+      /* aliases for existing class references */
+      --purple: #273F7E;
+      --purple-light: #1A2F63;
+      --purple-soft: #EEF2FA;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #E5E7EB;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 48px 24px;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+
+    /* Phone frame */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--white);
+      border-radius: 48px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .phone-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6B7280;
+      margin-bottom: 12px;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 50px;
+      padding: 14px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { color: var(--ink); }
+
+    /* ========== SCREEN 1: HOME ========== */
+    .screen { display: flex; flex-direction: column; height: 100%; }
+
+    .home-nav {
+      padding: 8px 24px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .blua-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .blua-logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #273F7E, #4A8EC4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .blua-logo-mark svg { color: white; }
+    .blua-logo-text { font-size: 20px; font-weight: 700; color: var(--purple); letter-spacing: -0.02em; }
+    .avatar-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4A8EC4, #273F7E);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; color: white;
+    }
+
+    .home-hero {
+      padding: 12px 24px 24px;
+      flex-shrink: 0;
+    }
+    .home-greeting {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .home-greeting span { color: var(--purple); }
+    .home-sub {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* AI Ask box */
+    .ask-box {
+      margin: 0 24px 24px;
+      background: linear-gradient(135deg, #273F7E 0%, #0F2460 100%);
+      border-radius: 24px;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+    .ask-box-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .ai-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ask-box-title { font-size: 15px; font-weight: 600; color: white; }
+    .ask-box-subtitle { font-size: 12px; color: rgba(255,255,255,0.6); }
+    .ask-input-fake {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: text;
+    }
+    .ask-input-fake span {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      flex: 1;
+    }
+    .mic-btn {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Quick asks */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0 24px;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+    .quick-asks {
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .quick-ask-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .chip-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .chip-text { font-size: 14px; color: var(--ink); font-weight: 400; flex: 1; line-height: 1.35; }
+    .chip-arrow { color: var(--muted-light); flex-shrink: 0; }
+
+    /* Recent */
+    .recent-section {
+      padding: 20px 24px 0;
+      flex: 1;
+      overflow: hidden;
+    }
+    .recent-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .recent-dot {
+      width: 6px; height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .recent-q { font-size: 13px; color: var(--ink); line-height: 1.4; }
+    .recent-time { font-size: 11px; color: var(--muted-light); margin-top: 2px; }
+
+    /* Bottom nav */
+    .bottom-nav {
+      padding: 12px 24px 28px;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+      flex-shrink: 0;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer;
+    }
+    .nav-item span { font-size: 10px; color: var(--muted-light); font-weight: 500; }
+    .nav-item.active span { color: var(--purple); font-weight: 600; }
+    .nav-item svg { color: var(--muted-light); }
+    .nav-item.active svg { color: var(--purple); }
+
+    /* ========== SCREEN 2: CHAT ========== */
+    .chat-nav {
+      padding: 8px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .back-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-nav-info { flex: 1; }
+    .chat-nav-title { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .chat-nav-status { font-size: 12px; color: var(--teal); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .status-dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; }
+    .chat-more { width: 34px; height: 34px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; }
+
+    /* Disclaimer */
+    .disclaimer {
+      margin: 12px 16px;
+      background: var(--danger-soft);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      flex-shrink: 0;
+    }
+    .disclaimer-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .disclaimer p { font-size: 11px; color: var(--danger); line-height: 1.5; }
+
+    /* Chat messages */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .msg-row { display: flex; gap: 10px; align-items: flex-end; }
+    .msg-row.user { flex-direction: row-reverse; }
+
+    .ai-avatar {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, #273F7E, #4A8EC4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bubble {
+      max-width: 74%;
+      padding: 12px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .bubble.ai {
+      background: var(--bubble-ai);
+      color: var(--ink);
+      border-bottom-left-radius: 4px;
+    }
+    .bubble.user {
+      background: var(--bubble-user);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble strong { font-weight: 600; }
+    .bubble ul { padding-left: 16px; margin-top: 6px; }
+    .bubble ul li { margin-bottom: 4px; }
+
+    .msg-time { font-size: 10px; color: var(--muted-light); padding: 0 4px; }
+
+    /* Typing indicator */
+    .typing {
+      display: flex; gap: 10px; align-items: flex-end;
+    }
+    .typing-dots {
+      background: var(--bubble-ai);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 14px 18px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      background: var(--muted-light);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* Follow-up chips */
+    .followup-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+    .followup-chip {
+      background: var(--purple-soft);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 13px;
+      border-radius: 20px;
+      border: 1px solid rgba(39,63,126,0.2);
+      cursor: pointer;
+    }
+
+    /* Chat input */
+    .chat-input-bar {
+      padding: 12px 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+      flex-shrink: 0;
+    }
+    .chat-input-wrap {
+      flex: 1;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-input-wrap input-fake {
+      flex: 1;
+      font-size: 14px;
+      color: var(--muted-light);
+    }
+    .chat-input-wrap span { font-size: 14px; color: var(--muted-light); flex: 1; }
+    .send-btn {
+      width: 42px; height: 42px;
+      background: var(--blue);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .mic-sm {
+      width: 32px; height: 32px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ========== SCREEN 3: RESULT ========== */
+    .result-nav {
+      padding: 8px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .result-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 20px 20px;
+    }
+    .result-question {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    .result-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .result-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--teal-light);
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .result-time { font-size: 11px; color: var(--muted-light); }
+
+    .result-section { margin-bottom: 20px; }
+    .result-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+    .result-text {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+    .result-card {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .result-card-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--purple-soft);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .result-card-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .result-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    .cta-card {
+      background: linear-gradient(135deg, #273F7E, #0F2460);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .cta-text { flex: 1; }
+    .cta-title { font-size: 14px; font-weight: 600; color: white; margin-bottom: 3px; }
+    .cta-sub { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .cta-btn {
+      background: white;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+    /* Wrapper label */
+    .screen-wrap { display: flex; flex-direction: column; align-items: center; }
+  </style>
+</head>
+<body>
+
+  <!-- SCREEN 1: HOME / ASK AI -->
+  <div class="screen-wrap">
+    <p class="phone-label">Home — Ask AI</p>
+    <div class="phone">
+      <div class="screen">
+        <!-- Status bar -->
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <div class="status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/></svg>
+            <svg width="16" height="12" viewBox="0 0 24 12" fill="currentColor"><path d="M1 4C5.5 0 18.5 0 23 4" opacity="0.3"/><path d="M4 7c2.5-2 13.5-2 16 0" opacity="0.6"/><path d="M7.5 10c1.5-1 7.5-1 9 0"/><circle cx="12" cy="12" r="1.5"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4.5v3a1.5 1.5 0 000-3z" fill="currentColor" opacity="0.4"/></svg>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <div class="home-nav">
+          <div class="blua-logo">
+            <img src="assets/blua-logo.png" alt="blua." style="height:28px;width:auto;display:block;" />
+          </div>
+          <div class="avatar-btn">AH</div>
+        </div>
+
+        <!-- Hero -->
+        <div class="home-hero">
+          <p class="home-greeting">Good morning, <span>Amy</span> 👋</p>
+          <p class="home-sub">Ask me anything about your health. I'm here to help.</p>
+        </div>
+
+        <!-- Ask box -->
+        <div class="ask-box">
+          <div class="ask-box-header">
+            <div class="ai-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div>
+              <div class="ask-box-title">Blua AI Health Assistant</div>
+              <div class="ask-box-subtitle">Powered by Bupa clinical expertise</div>
+            </div>
+          </div>
+          <div class="ask-input-fake">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Ask me a health question...</span>
+            <div class="mic-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick asks -->
+        <p class="section-title">Suggested questions</p>
+        <div class="quick-asks">
+          <div class="quick-ask-chip">
+            <div class="chip-icon" style="background:#FEF3C7;">💊</div>
+            <span class="chip-text">Can I take ibuprofen with my blood pressure medication?</span>
+            <svg class="chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="quick-ask-chip">
+            <div class="chip-icon" style="background:#DCFCE7;">🩺</div>
+            <span class="chip-text">What are common signs of anxiety I should look out for?</span>
+            <svg class="chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="quick-ask-chip">
+            <div class="chip-icon" style="background:#EDE9FE;">😴</div>
+            <span class="chip-text">Why do I keep waking up at 3am?</span>
+            <svg class="chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </div>
+
+        <!-- Recent -->
+        <div class="recent-section">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;">Recent</span>
+            <span style="font-size:12px;color:var(--purple);font-weight:500;">See all</span>
+          </div>
+          <div class="recent-item">
+            <div class="recent-dot"></div>
+            <div>
+              <div class="recent-q">How much water should I drink per day?</div>
+              <div class="recent-time">Yesterday · 2 min read</div>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-dot" style="background:var(--purple-light);"></div>
+            <div>
+              <div class="recent-q">Is it normal to feel tired after eating?</div>
+              <div class="recent-time">2 days ago · 1 min read</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom nav -->
+        <div class="bottom-nav">
+          <div class="nav-item active">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            <span>AI Ask</span>
+          </div>
+          <div class="nav-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>Health</span>
+          </div>
+          <div class="nav-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Appointments</span>
+          </div>
+          <div class="nav-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: CHAT IN PROGRESS -->
+  <div class="screen-wrap">
+    <p class="phone-label">Active Chat</p>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span class="time">9:44</span>
+          <div class="status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/></svg>
+            <svg width="16" height="12" viewBox="0 0 24 12" fill="currentColor"><path d="M1 4C5.5 0 18.5 0 23 4" opacity="0.3"/><path d="M4 7c2.5-2 13.5-2 16 0" opacity="0.6"/><path d="M7.5 10c1.5-1 7.5-1 9 0"/><circle cx="12" cy="12" r="1.5"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="2" y="2" width="14" height="8" rx="2" fill="currentColor"/><path d="M23 4.5v3a1.5 1.5 0 000-3z" fill="currentColor" opacity="0.4"/></svg>
+          </div>
+        </div>
+
+        <div class="chat-nav">
+          <div class="back-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <div class="chat-nav-info">
+            <div class="chat-nav-title">Blua AI Assistant</div>
+            <div class="chat-nav-status"><div class="status-dot"></div>Online · Clinical AI</div>
+          </div>
+          <div class="chat-more">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <span class="disclaimer-icon">⚠️</span>
+          <p>This AI provides general health information only. Always consult a qualified GP for medical advice.</p>
+        </div>
+
+        <div class="chat-messages">
+          <!-- AI greeting -->
+          <div class="msg-row">
+            <div class="ai-avatar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div>
+              <div class="bubble ai">Hi Amy! I'm your Blua health assistant. What's on your mind today?</div>
+              <div class="msg-time">9:41</div>
+            </div>
+          </div>
+
+          <!-- User message -->
+          <div class="msg-row user">
+            <div>
+              <div class="bubble user">Can I take ibuprofen with my blood pressure medication?</div>
+              <div class="msg-time" style="text-align:right;">9:42</div>
+            </div>
+          </div>
+
+          <!-- AI response -->
+          <div class="msg-row">
+            <div class="ai-avatar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div>
+              <div class="bubble ai">
+                <strong>This is an important question.</strong> In general, ibuprofen can interfere with some blood pressure medications and may cause your blood pressure to rise.
+                <ul>
+                  <li>It can reduce the effectiveness of ACE inhibitors and diuretics</li>
+                  <li>It may cause fluid retention</li>
+                  <li>Paracetamol is usually a safer alternative for pain relief</li>
+                </ul>
+              </div>
+              <div class="msg-time">9:43</div>
+            </div>
+          </div>
+
+          <!-- User follow up -->
+          <div class="msg-row user">
+            <div>
+              <div class="bubble user">What blood pressure medication should I avoid ibuprofen with?</div>
+              <div class="msg-time" style="text-align:right;">9:43</div>
+            </div>
+          </div>
+
+          <!-- Typing -->
+          <div class="typing">
+            <div class="ai-avatar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div class="typing-dots">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Follow-up suggestions -->
+        <div class="followup-chips">
+          <div class="followup-chip">What can I take instead?</div>
+          <div class="followup-chip">Book a GP</div>
+          <div class="followup-chip">Tell me more</div>
+        </div>
+
+        <!-- Input bar -->
+        <div class="chat-input-bar">
+          <div class="mic-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          </div>
+          <div class="chat-input-wrap">
+            <span>Type a question...</span>
+          </div>
+          <div class="send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: AI RESPONSE / RESULT VIEW -->
+  <div class="screen-wrap">
+    <p class="phone-label">AI Response</p>
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span class="time">9:46</span>
+          <div class="status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/></svg>
+            <svg width="16" height="12" viewBox="0 0 24 12" fill="currentColor"><path d="M1 4C5.5 0 18.5 0 23 4" opacity="0.3"/><path d="M4 7c2.5-2 13.5-2 16 0" opacity="0.6"/><path d="M7.5 10c1.5-1 7.5-1 9 0"/><circle cx="12" cy="12" r="1.5"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4.5v3a1.5 1.5 0 000-3z" fill="currentColor" opacity="0.4"/></svg>
+          </div>
+        </div>
+
+        <div class="result-nav">
+          <div class="back-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:8px;">
+            <div class="chat-more">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </div>
+            <div class="chat-more">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-content">
+          <div class="result-question">Signs of anxiety I should know about</div>
+
+          <div class="result-meta">
+            <div class="result-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Clinically reviewed
+            </div>
+            <span class="result-time">3 min read</span>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title">Overview</div>
+            <div class="result-text">Anxiety is very common and shows up differently for different people. Knowing what to look out for is the first step to getting the right support.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="result-section">
+            <div class="result-section-title">Common signs</div>
+            <div class="result-card">
+              <div class="result-card-icon">🧠</div>
+              <div>
+                <div class="result-card-title">Mental symptoms</div>
+                <div class="result-card-desc">Excessive worry, racing thoughts, difficulty concentrating, feeling on edge or irritable</div>
+              </div>
+            </div>
+            <div class="result-card">
+              <div class="result-card-icon">💓</div>
+              <div>
+                <div class="result-card-title">Physical symptoms</div>
+                <div class="result-card-desc">Increased heart rate, sweating, trembling, shortness of breath, fatigue, headaches</div>
+              </div>
+            </div>
+            <div class="result-card">
+              <div class="result-card-icon">😴</div>
+              <div>
+                <div class="result-card-title">Sleep disturbance</div>
+                <div class="result-card-desc">Difficulty falling asleep, waking during the night, or restless and unrefreshing sleep</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="result-section">
+            <div class="result-section-title">When to seek help</div>
+            <div class="result-text">If symptoms have lasted more than two weeks and are affecting your daily life, it's worth speaking to a GP. You don't have to manage this alone.</div>
+          </div>
+
+          <div class="cta-card">
+            <div class="cta-text">
+              <div class="cta-title">Speak to a Blua GP today</div>
+              <div class="cta-sub">Available within 2 hours</div>
+            </div>
+            <div class="cta-btn">Book now</div>
+          </div>
+
+          <div style="margin-top:16px; background:var(--bg); border-radius:14px; padding:12px 14px;">
+            <div style="font-size:10px; color:var(--muted-light); line-height:1.6;">
+              This information is for general guidance only and does not constitute medical advice. Always consult a qualified healthcare professional for diagnosis and treatment.
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom input -->
+        <div class="chat-input-bar" style="padding-top:10px;">
+          <div class="chat-input-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Ask a follow-up question...</span>
+          </div>
+          <div class="send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

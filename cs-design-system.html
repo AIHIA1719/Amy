@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundations, British Gas · Amy Hirrell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F4F0; --ink: #0D0D0B; --muted: #7A7870;
+      --border: #DDDAD4; --accent: #FF4500; --white: #FFFFFF;
+      --card-bg: #ECEAE4; --dark: #0A1628;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0 48px; height: 64px; background: rgba(10,22,40,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; text-decoration: none; color: #fff; letter-spacing: -0.01em; }
+    .nav-back { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.5); transition: color 0.2s, gap 0.25s; }
+    .nav-back:hover { color: #fff; gap: 14px; }
+
+    .cs-hero { padding-top: 64px; min-height: 88vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 72px; padding-left: 48px; padding-right: 48px; background: linear-gradient(145deg, #0A1628 0%, #0E2347 40%, #133068 75%, #0A1628 100%); }
+    .hero-flame { position: absolute; right: 0; top: 0; bottom: 0; width: 55%; opacity: 0.06; background: radial-gradient(ellipse at 80% 40%, #0085CA 0%, transparent 55%), radial-gradient(ellipse at 60% 70%, #FF4500 0%, transparent 45%); pointer-events: none; }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 64px 64px; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,22,40,0.96) 0%, rgba(10,22,40,0.4) 60%, transparent 100%); }
+    .cs-hero-content { position: relative; z-index: 1; }
+    .cs-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+    .cs-title { font-family: 'Fraunces', serif; font-size: clamp(64px, 10vw, 128px); font-weight: 200; line-height: 0.92; letter-spacing: -0.03em; color: #fff; margin-bottom: 16px; }
+    .cs-subtitle { font-family: 'Fraunces', serif; font-size: clamp(20px, 2.8vw, 36px); font-weight: 200; font-style: italic; color: rgba(255,255,255,0.5); margin-bottom: 48px; }
+    .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+    .cs-meta-value { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+    .award-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,69,0,0.12); border: 1px solid rgba(255,69,0,0.3); padding: 6px 14px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; }
+
+    .cs-body { max-width: 1080px; margin: 0 auto; padding: 96px 48px 120px; }
+    .section { margin-bottom: 88px; }
+    .section-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .section-heading { font-family: 'Fraunces', serif; font-size: clamp(28px, 3vw, 44px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 28px; }
+    .section-heading em { font-style: italic; }
+    .body-text { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; max-width: 680px; }
+    .body-text strong { color: var(--ink); font-weight: 500; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 72px 0; }
+
+    .callout { background: var(--card-bg); border-left: 3px solid var(--accent); padding: 28px 32px; margin: 32px 0; max-width: 720px; }
+    .callout p { font-size: 19px; font-family: 'Fraunces', serif; font-weight: 300; font-style: italic; line-height: 1.6; color: var(--ink); }
+
+    .findings { list-style: none; margin: 24px 0; max-width: 680px; }
+    .findings li { padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 15px; color: var(--muted); line-height: 1.7; display: flex; gap: 16px; align-items: baseline; }
+    .findings li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+    .findings li:first-child { border-top: 1px solid var(--border); }
+    .findings li strong { color: var(--ink); font-weight: 500; }
+
+    .role-card { background: var(--ink); padding: 40px; margin: 32px 0; max-width: 720px; }
+    .role-card h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300; color: #fff; margin-bottom: 20px; }
+    .role-card ul { list-style: none; }
+    .role-card ul li { font-size: 14px; color: rgba(245,244,240,0.7); line-height: 1.8; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; gap: 12px; }
+    .role-card ul li::before { content: '↳'; color: var(--accent); flex-shrink: 0; }
+    .role-card ul li:last-child { border-bottom: none; }
+
+    .two-col-text { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 32px; }
+    .two-col-text h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; margin-bottom: 14px; }
+    .two-col-text h3 em { font-style: italic; }
+    .two-col-text p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+    .principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .principle { background: var(--bg); padding: 28px 24px; }
+    .principle-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 200; font-style: italic; color: var(--border); margin-bottom: 8px; }
+    .principle-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; margin-bottom: 8px; }
+    .principle-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* Bento outcome cards */
+    .outcomes-bento { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: calc(100% + 96px); margin-left: -48px; margin-top: 40px; }
+    .o-card { background: var(--dark); padding: 52px 48px; }
+    .o-card-num { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 200; font-style: italic; color: rgba(255,255,255,0.1); line-height: 1; margin-bottom: 20px; }
+    .o-card-title { font-family: 'Fraunces', serif; font-size: clamp(20px, 2vw, 28px); font-weight: 300; color: #fff; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .o-card-title em { font-style: italic; color: rgba(255,255,255,0.45); }
+    .o-card-body { font-size: 14px; color: rgba(245,244,240,0.5); line-height: 1.85; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; }
+
+    /* Stat blocks */
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 40px 0; }
+    .stat-block { background: var(--bg); padding: 36px 28px; }
+    .stat-num { font-family: 'Fraunces', serif; font-size: clamp(40px, 5vw, 64px); font-weight: 200; font-style: italic; color: var(--ink); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
+    .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; line-height: 1.5; }
+
+    /* Component showcase block */
+    .component-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .component-card { background: var(--bg); padding: 24px; }
+    .component-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .component-name { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 300; margin-bottom: 8px; }
+    .component-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* Typography showcase */
+    .type-showcase { background: var(--dark); padding: 48px; margin: 32px 0; width: calc(100% + 96px); margin-left: -48px; }
+    .type-row { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 20px 0; display: flex; align-items: baseline; gap: 24px; }
+    .type-row:last-child { border-bottom: none; }
+    .type-size { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.25); width: 80px; flex-shrink: 0; }
+    .type-sample { color: #fff; line-height: 1; }
+    .type-h1 { font-family: 'Fraunces', serif; font-size: clamp(32px, 5vw, 70px); font-weight: 200; letter-spacing: -0.02em; }
+    .type-h2 { font-family: 'Fraunces', serif; font-size: clamp(24px, 3.5vw, 50px); font-weight: 200; }
+    .type-h3 { font-family: 'Fraunces', serif; font-size: clamp(18px, 2.5vw, 30px); font-weight: 200; }
+    .type-body { font-size: 16px; font-weight: 300; }
+    .type-small { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.6); }
+
+    /* Responsive breakpoints visual */
+    .breakpoint-row { display: flex; align-items: flex-end; gap: 16px; margin: 32px 0; padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .bp-block { background: var(--card-bg); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 14px; gap: 8px; }
+    .bp-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .bp-px { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 300; color: var(--ink); }
+    .bp-xl { width: 180px; height: 120px; }
+    .bp-md { width: 140px; height: 96px; }
+    .bp-sm { width: 100px; height: 72px; }
+    .bp-xs { width: 60px; height: 52px; }
+
+    .well-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .well-col { background: var(--bg); padding: 32px 28px; }
+    .well-col h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; margin-bottom: 20px; }
+    .well-col h3 em { font-style: italic; }
+    .well-col ul { list-style: none; }
+    .well-col ul li { font-size: 14px; color: var(--muted); line-height: 1.7; padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: baseline; }
+    .well-col ul li:last-child { border-bottom: none; }
+    .well-col ul li::before { flex-shrink: 0; font-size: 13px; }
+    .went-well li::before { content: '✓'; color: #22c55e; }
+    .didnt-well li::before { content: '↯'; color: var(--accent); }
+
+    .cs-nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 48px; border-top: 1px solid var(--border); background: var(--white); }
+    .cs-nav a { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s, gap 0.25s; }
+    .cs-nav a:hover { color: var(--ink); gap: 16px; }
+
+    .img-full { width: calc(100% + 96px); margin-left: -48px; margin-right: -48px; line-height: 0; margin-top: 48px; margin-bottom: 0; overflow: hidden; }
+    .img-full img { width: 100%; display: block; }
+    .img-caption { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-top: 10px; text-align: center; }
+    .img-two { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 40px 0; }
+    .img-two figure { overflow: hidden; background: var(--card-bg); cursor: zoom-in; position: relative; }
+    .img-two figure img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; transition: opacity 0.2s; }
+    .img-two figure:hover img { opacity: 0.85; }
+    .img-two figure figcaption { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 12px; background: var(--bg); border-top: 1px solid var(--border); }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-overlay img { max-width: min(95vw, 1400px); max-height: 92vh; width: auto; display: block; box-shadow: 0 40px 100px rgba(0,0,0,0.7); transform: scale(0.96); transition: transform 0.3s ease; }
+    .modal-overlay.open img { transform: scale(1); }
+    .modal-close { position: fixed; top: 24px; right: 32px; font-size: 28px; color: rgba(255,255,255,0.6); cursor: pointer; background: none; border: none; line-height: 1; transition: color 0.2s; }
+    .modal-close:hover { color: #fff; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .cs-hero { padding-left: 24px; padding-right: 24px; }
+      .cs-body { padding: 64px 24px 80px; }
+      .type-showcase { width: 100%; margin-left: 0; padding: 32px 24px; }
+      .outcomes-bento { grid-template-columns: 1fr; width: 100%; margin-left: 0; }
+      .o-card { padding: 36px 28px; }
+      .two-col-text, .principles, .well-grid, .stat-row, .component-grid { grid-template-columns: 1fr; }
+      .breakpoint-row { gap: 10px; }
+      .bp-xl { width: 120px; }
+      .bp-md { width: 90px; }
+      .bp-sm { width: 64px; }
+      .bp-xs { width: 40px; }
+      .cs-meta-row { gap: 24px; }
+      .cs-nav { padding: 32px 24px; flex-direction: column; gap: 20px; }
+      .img-full { width: 100%; margin-left: 0; margin-right: 0; }
+      .img-two { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">Amy Hirrell</a>
+    <a class="nav-back" href="index.html">← All work</a>
+  </nav>
+
+  <section class="cs-hero">
+    <div class="hero-grid"></div>
+    <div class="hero-flame"></div>
+    <div class="hero-overlay"></div>
+    <div class="cs-hero-content">
+      <p class="cs-eyebrow">Case Study · 02 · British Gas</p>
+      <div class="award-pill">Award-winning work</div>
+      <h1 class="cs-title">Foundations</h1>
+      <p class="cs-subtitle">Scaling design across British Gas's first digital transformation</p>
+      <div class="cs-meta-row">
+        <div><p class="cs-meta-label">Product Area</p><p class="cs-meta-value">britishgas.co.uk · Web Platform</p></div>
+        <div><p class="cs-meta-label">My Role</p><p class="cs-meta-value">Senior Product Designer</p></div>
+        <div><p class="cs-meta-label">Team</p><p class="cs-meta-value">UX, UI Dev, Product, Brand, CMS</p></div>
+        <div><p class="cs-meta-label">Scope</p><p class="cs-meta-value">Responsive redesign · Style guide · Pattern library</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-body">
+
+    <!-- 1. THE CONTEXT -->
+    <div class="section reveal">
+      <p class="section-label">The Context</p>
+      <h2 class="section-heading">A brand going <em>digital for the first time</em></h2>
+      <p class="body-text">
+        British Gas had a clear offline identity. The flame. The navy. The brand voice. But their digital presence hadn't kept pace. The website had grown organically over years, page by page, team by team, without a shared system to hold it together. Different screens looked like they belonged to different companies.
+      </p>
+      <p class="body-text">
+        This was the moment to change that. <strong>The first full digital transformation for one of the UK's biggest household brands</strong>, starting with a complete responsive redesign of britishgas.co.uk and the creation of the tools that would make design scalable going forward: a style guide and pattern library, built from scratch.
+      </p>
+      <div class="callout">
+        <p>"Our central drive is to make our customers' lives a little simpler. Clear and simple, friendly and patient, expert and reassuring."</p>
+      </div>
+
+      <div class="img-full reveal">
+        <img src="assets/british-gas/homepage-960-clean.jpg" alt="britishgas.co.uk homepage at 960px medium breakpoint" />
+        <p class="img-caption">britishgas.co.uk · Medium breakpoint (960px) · Redesigned homepage</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 2. MY ROLE -->
+    <div class="section reveal">
+      <p class="section-label">My Role</p>
+      <h2 class="section-heading">How I <em>contributed</em></h2>
+      <p class="body-text">I joined as Lead UI/UX Designer at a point where the brief was broad and the process was still being defined. A lot of my value came from shaping not just the design, but how the team worked and what we were building toward.</p>
+      <div class="role-card">
+        <h3>Senior Product Designer</h3>
+        <ul>
+          <li>Designed the new responsive britishgas.co.uk from the ground up, across four breakpoints</li>
+          <li>Created British Gas's first digital style guide, translating brand identity into web-specific rules</li>
+          <li>Built and maintained the first pattern library, establishing reusable components used across the entire site</li>
+          <li>Introduced new working processes, including working in agile squads, which was new to the organisation</li>
+          <li>Collaborated across UX, UI development, product, brand, CMS and test teams</li>
+          <li>Presented and aligned work with stakeholders and the wider brand team throughout</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 3. THE CHALLENGE -->
+    <div class="section reveal">
+      <p class="section-label">The Challenge</p>
+      <h2 class="section-heading">Design at scale, <em>without the scaffolding</em></h2>
+      <p class="body-text">Before this project, there was no single source of truth for how britishgas.co.uk should look or behave. Designs were produced page by page. Decisions that had been made once were made again, differently, somewhere else. Forms existed in multiple inconsistent variants. Components were rebuilt rather than reused.</p>
+      <p class="body-text">At the same time, the world had moved on. Mobile traffic was rising sharply and the site wasn't built to meet it. <strong>The whole thing needed to be rebuilt responsively, coherently, and in a way that a large multi-disciplinary team could maintain and extend without losing consistency.</strong></p>
+
+      <div class="two-col-text" style="margin-top: 40px;">
+        <div>
+          <h3>The <em>design problem</em></h3>
+          <p>No shared system meant no consistency. Every team was solving the same problems independently, producing divergent output and burning time. Brand identity wasn't translating to digital in any coherent way. The site felt like a patchwork.</p>
+        </div>
+        <div>
+          <h3>The <em>delivery problem</em></h3>
+          <p>A brand of British Gas's scale needed a process that could scale with it. Individual design decisions don't work when you have squads shipping across dozens of pages simultaneously. The system had to become the design.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 4. RESPONSIVE REDESIGN -->
+    <div class="section reveal">
+      <p class="section-label">Responsive Design</p>
+      <h2 class="section-heading">Built for <em>every screen</em></h2>
+      <p class="body-text">The redesign was fully responsive from day one, designed and tested across four breakpoints. This was new territory for British Gas. The organisation had previously designed for desktop and worked downward. We flipped that: designing for the full range, with each breakpoint getting deliberate attention rather than being an afterthought.</p>
+
+      <div class="breakpoint-row reveal">
+        <div class="bp-block bp-xl">
+          <p class="bp-px">1280px</p>
+          <p class="bp-label">Large</p>
+        </div>
+        <div class="bp-block bp-md">
+          <p class="bp-px">960px</p>
+          <p class="bp-label">Medium</p>
+        </div>
+        <div class="bp-block bp-sm">
+          <p class="bp-px">768px</p>
+          <p class="bp-label">Small</p>
+        </div>
+        <div class="bp-block bp-xs">
+          <p class="bp-px">320px</p>
+          <p class="bp-label">X-Small</p>
+        </div>
+      </div>
+
+      <p class="body-text">The goal was a consistent experience across all devices, with a minimum of resizing and panning. Navigation, layouts, imagery and interactions were all considered at each size, not retrofitted after the fact.</p>
+
+      <p class="section-label" style="margin-top: 48px;">Typography System</p>
+      <div class="img-full reveal" style="margin-top: 16px;">
+        <img src="assets/british-gas/comp-typography.png" alt="British Gas typography scale — H1 to body text" />
+        <p class="img-caption">Style guide · Typography scale · 9 defined text styles</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 5. THE PATTERN LIBRARY -->
+    <div class="section reveal">
+      <p class="section-label">Pattern Library</p>
+      <h2 class="section-heading">The first <em>shared design language</em></h2>
+      <p class="body-text">The pattern library was the centrepiece of this project. Not just a visual document, but a working system that teams across British Gas could use to build consistently, without having to reinvent anything. Every component was tested with real users. Every decision was made with scalability in mind.</p>
+
+      <div class="img-two reveal" style="margin-bottom: 0;">
+        <figure style="aspect-ratio: auto; cursor: zoom-in;">
+          <img src="assets/british-gas/comp-buttons.png" alt="Button hierarchy — primary, secondary, tertiary, disabled" style="object-position: top left;" />
+          <figcaption>Buttons &amp; actions hierarchy</figcaption>
+        </figure>
+        <figure style="aspect-ratio: auto; cursor: zoom-in;">
+          <img src="assets/british-gas/comp-jumbotron.png" alt="Jumbotron component — home page hero with postcode input and CTA" style="object-position: top left;" />
+          <figcaption>Jumbotron · home page hero component</figcaption>
+        </figure>
+      </div>
+
+      <div class="callout" style="margin-top: 40px;">
+        <p>"Content panels as building blocks, used as components to create any page within the CMS. Design once, use everywhere."</p>
+      </div>
+
+      <div class="component-grid reveal">
+        <div class="component-card">
+          <p class="component-tag">Navigation</p>
+          <p class="component-name">Header, Mega Menu &amp; Footer</p>
+          <p class="component-desc">Global elements redesigned as a cohesive system. The mega menu introduced a new navigation architecture to handle British Gas's broad product range without overwhelming users.</p>
+        </div>
+        <div class="component-card">
+          <p class="component-tag">Actions</p>
+          <p class="component-name">Buttons &amp; Links</p>
+          <p class="component-desc">A defined hierarchy of primary, secondary and tertiary interactions. Social login patterns (Facebook, Twitter, Google) standardised across the platform.</p>
+        </div>
+        <div class="component-card">
+          <p class="component-tag">Data Collection</p>
+          <p class="component-name">Forms</p>
+          <p class="component-desc">Many disparate form types consolidated into a simplified, unified ruleset. Forms made dynamic using Single Page Application patterns, dramatically reducing friction.</p>
+        </div>
+        <div class="component-card">
+          <p class="component-tag">Interaction</p>
+          <p class="component-name">Accordions &amp; Overlays</p>
+          <p class="component-desc">Patterns for progressive disclosure and layered content. Tested with users to validate when to expand in-context versus present in an overlay.</p>
+        </div>
+        <div class="component-card">
+          <p class="component-tag">Content</p>
+          <p class="component-name">Jumbotron Panels</p>
+          <p class="component-desc">Three jumbotron levels for Home, Hub and Spoke pages. Two levels only, to minimise information architecture complexity and keep CMS authoring manageable.</p>
+        </div>
+        <div class="component-card">
+          <p class="component-tag">Feedback</p>
+          <p class="component-name">Error &amp; Validation</p>
+          <p class="component-desc">Consistent error messages, calendar patterns and caveat treatments across the entire site. Removing the patchwork of one-off implementations that preceded them.</p>
+        </div>
+      </div>
+
+      <p class="section-label" style="margin-top: 48px;">Components in context</p>
+      <p class="body-text">Every component was designed with its full range of states documented. The accordion shows progressive disclosure in practice. The live chat overlay demonstrates how a single component required four distinct states — each with its own defined behaviour, copy and layout.</p>
+
+      <div class="img-full reveal" style="margin-top: 16px; margin-bottom: 24px;">
+        <img src="assets/british-gas/comp-accordion.png" alt="Accordion component — open and collapsed states" />
+        <p class="img-caption">Accordion · progressive disclosure pattern · open &amp; collapsed states</p>
+      </div>
+
+      <div class="img-two reveal">
+        <figure>
+          <img src="assets/british-gas/webchat-proactive.jpg" alt="Webchat — proactive prompt state" />
+          <figcaption>Proactive prompt</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/british-gas/webchat-enter-details.jpg" alt="Webchat — enter details state" />
+          <figcaption>Enter details</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/british-gas/webchat-chat-open.jpg" alt="Webchat — active conversation state" />
+          <figcaption>Active conversation</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/british-gas/webchat-no-agent.jpg" alt="Webchat — no agent available state" />
+          <figcaption>No agent available</figcaption>
+        </figure>
+      </div>
+
+      <ul class="findings" style="margin-top: 40px;">
+        <li><strong>Tested with real users throughout.</strong> Each pattern was validated before being added to the library, not after. The system only included what had been proven to work.</li>
+        <li><strong>Audience beyond designers.</strong> The guide was built for UX designers, UI developers, product owners, CMS managers, test analysts, BAs, SAs and the brand team — everyone who touched the product.</li>
+        <li><strong>A living system from day one.</strong> The library was designed to evolve. New patterns would be added after testing and optimisation, with an online live version planned as the next step.</li>
+      </ul>
+    </div>
+
+    <hr />
+
+    <!-- 6. NEW WAY OF WORKING -->
+    <div class="section reveal">
+      <p class="section-label">Ways of Working</p>
+      <h2 class="section-heading">Introducing <em>agile to the organisation</em></h2>
+      <p class="body-text">Working in agile squads was new at British Gas. The organisation had been used to more waterfall, handoff-driven delivery. Part of my contribution here wasn't just the design work itself, but helping to establish the processes and culture that made this way of working viable.</p>
+
+      <div class="two-col-text">
+        <div>
+          <h3>Squads, <em>not silos</em></h3>
+          <p>Each squad brought together UX, UI development, product and CMS capability under one roof. This removed the long handoff chains that had slowed previous delivery and meant design decisions were made alongside, not before, the people who would build them.</p>
+        </div>
+        <div>
+          <h3>New <em>processes</em></h3>
+          <p>I introduced ways of working that hadn't existed before: shared design reviews, pattern contribution processes, and a regular cadence for testing and adding to the library. These weren't just efficiency measures. They changed how the team thought about design ownership.</p>
+        </div>
+      </div>
+
+      <div class="principles" style="margin-top: 40px;">
+        <div class="principle">
+          <p class="principle-num">01</p>
+          <p class="principle-name">Design in the open</p>
+          <p class="principle-desc">Regular cross-team reviews meant decisions were visible early. Fewer surprises at handoff. Fewer rounds of late rework.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">02</p>
+          <p class="principle-name">Patterns, not pages</p>
+          <p class="principle-desc">Shifting the team's mindset from designing individual pages to designing reusable systems was one of the most significant cultural changes of the project.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">03</p>
+          <p class="principle-name">Test before you ship</p>
+          <p class="principle-desc">Every pattern in the library was user-tested before becoming official. The system was trusted because it had been validated, not just designed.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">04</p>
+          <p class="principle-name">Built to be extended</p>
+          <p class="principle-desc">The pattern library was a v1.0, explicitly. The goal was a foundation that would keep growing, with a live online version planned as the natural evolution.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 7. IMPACT -->
+    <div class="section reveal">
+      <p class="section-label">Impact</p>
+      <h2 class="section-heading">What it <em>changed</em></h2>
+      <p class="body-text">The work had two types of impact. The immediate: a redesigned, responsive website that actually worked across devices, with a coherent design language for the first time. And the lasting: a shared system that fundamentally changed how the team designed and shipped.</p>
+    </div>
+
+    <div class="outcomes-bento reveal">
+      <div class="o-card">
+        <p class="o-card-num">01</p>
+        <h3 class="o-card-title">First responsive website <em>for British Gas</em></h3>
+        <p class="o-card-body">britishgas.co.uk became fully responsive across four breakpoints, reaching millions of customers on mobile for the first time with an experience actually designed for the device they were on.</p>
+      </div>
+      <div class="o-card">
+        <p class="o-card-num">02</p>
+        <h3 class="o-card-title">Design consistency <em>at scale</em></h3>
+        <p class="o-card-body">The pattern library eliminated the patchwork of one-off solutions. Squads across the organisation could now build to a shared standard, without needing to reinvent or re-debate every component.</p>
+      </div>
+      <div class="o-card">
+        <p class="o-card-num">03</p>
+        <h3 class="o-card-title">Efficiency across <em>design and development</em></h3>
+        <p class="o-card-body">Reusable, tested components reduced duplication across teams. Less time spent rebuilding the same things, more time spent solving real customer problems. A measurable shift in how the team spent its effort.</p>
+      </div>
+      <div class="o-card">
+        <p class="o-card-num">04</p>
+        <h3 class="o-card-title">A foundation <em>for what came next</em></h3>
+        <p class="o-card-body">The system was designed to grow. The work established a culture of shared ownership around design decisions that outlasted the project itself, and the library continued to evolve long after v1.0 shipped.</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 8. REFLECTION -->
+    <div class="section reveal">
+      <p class="section-label">Reflection</p>
+      <h2 class="section-heading">What I took <em>away</em></h2>
+
+      <div class="well-grid">
+        <div class="well-col">
+          <h3>What went <em>well</em></h3>
+          <ul class="went-well">
+            <li>Framing the pattern library as a shared tool, not just a designer artefact, meant buy-in came from every discipline, not just design</li>
+            <li>Testing each pattern before adding it to the library built trust in the system. People used it because they knew it worked</li>
+            <li>Introducing agile squad working created real momentum. Cross-functional collaboration shortened the feedback loops that had previously slowed delivery</li>
+            <li>The style guide translating offline brand identity into digital rules gave everyone a shared reference and removed a lot of recurring debate</li>
+          </ul>
+        </div>
+        <div class="well-col">
+          <h3>What I'd <em>do differently</em></h3>
+          <ul class="didnt-well">
+            <li>The live online version of the pattern library was planned but not yet shipped at v1.0. Getting that in earlier would have accelerated adoption across squads considerably</li>
+            <li>Some patterns were added to the library before enough squads had tried to use them in context. Real-world friction only became apparent later, requiring revision</li>
+            <li>Onboarding new team members to the system took longer than it should have. Better documentation from the start would have reduced that ramp-up time</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top: 40px;">
+        <p>"The most important thing I built wasn't a component. It was the confidence across the team that design could be consistent, scalable, and owned by everyone."</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-overlay" id="imgModal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <img id="modalImg" src="" alt="" />
+  </div>
+
+  <div class="cs-nav">
+    <a href="cs-playlist.html">← Previous: Playlist</a>
+    <a href="cs-onboarding.html">Next: Sky Q →</a>
+  </div>
+
+  <script>
+    // Scroll reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Modal lightbox
+    const modal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalClose = document.getElementById('modalClose');
+
+    document.querySelectorAll('.img-two figure').forEach(fig => {
+      fig.addEventListener('click', () => {
+        modalImg.src = fig.querySelector('img').src;
+        modalImg.alt = fig.querySelector('img').alt;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+
+</body>
+</html>

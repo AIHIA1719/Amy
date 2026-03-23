@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist, Sky Glass · Amy Hirrell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F4F0; --ink: #0D0D0B; --muted: #7A7870;
+      --border: #DDDAD4; --accent: #FF4500; --white: #FFFFFF;
+      --card-bg: #ECEAE4; --dark: #1A1A2E;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0 48px; height: 64px; background: rgba(26,26,46,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; text-decoration: none; color: #fff; letter-spacing: -0.01em; }
+    .nav-back { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.5); transition: color 0.2s, gap 0.25s; }
+    .nav-back:hover { color: #fff; gap: 14px; }
+
+    .cs-hero { padding-top: 64px; min-height: 90vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 72px; padding-left: 48px; padding-right: 48px; }
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; }
+    .hero-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,12,22,0.92) 0%, rgba(12,12,22,0.55) 50%, rgba(12,12,22,0.2) 100%); }
+    .cs-hero-content { position: relative; z-index: 1; }
+    .cs-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+    .cs-title { font-family: 'Fraunces', serif; font-size: clamp(64px, 10vw, 128px); font-weight: 200; line-height: 0.92; letter-spacing: -0.03em; color: #fff; margin-bottom: 16px; }
+    .cs-subtitle { font-family: 'Fraunces', serif; font-size: clamp(20px, 2.8vw, 36px); font-weight: 200; font-style: italic; color: rgba(255,255,255,0.5); margin-bottom: 48px; }
+    .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+    .cs-meta-value { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+    .cs-body { max-width: 1080px; margin: 0 auto; padding: 96px 48px 120px; }
+    .section { margin-bottom: 88px; }
+    .section-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .section-heading { font-family: 'Fraunces', serif; font-size: clamp(28px, 3vw, 44px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 28px; }
+    .section-heading em { font-style: italic; }
+    .body-text { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; max-width: 680px; }
+    .body-text strong { color: var(--ink); font-weight: 500; }
+
+    .img-full-dark { width: calc(100% + 96px); margin-left: -48px; margin-right: -48px; background: var(--dark); padding: 48px; margin-top: 40px; margin-bottom: 40px; }
+    .img-full-dark img { width: 100%; display: block; }
+    .img-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 40px 0; text-align: center; }
+    .img-two figure { overflow: hidden; background: var(--card-bg); cursor: zoom-in; }
+    .img-two figure img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; transition: opacity 0.2s; }
+    .img-two figure:hover img { opacity: 0.85; }
+    .img-two { align-items: start; }
+    .img-two figure { aspect-ratio: 16 / 10; }
+    .img-caption { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-top: 10px; text-align: center; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 72px 0; }
+
+    .callout { background: var(--card-bg); border-left: 3px solid var(--accent); padding: 28px 32px; margin: 32px 0; max-width: 720px; }
+    .callout p { font-size: 19px; font-family: 'Fraunces', serif; font-weight: 300; font-style: italic; line-height: 1.6; color: var(--ink); }
+
+    .findings { list-style: none; margin: 24px 0; max-width: 680px; }
+    .findings li { padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 15px; color: var(--muted); line-height: 1.7; display: flex; gap: 16px; align-items: baseline; }
+    .findings li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+    .findings li:first-child { border-top: 1px solid var(--border); }
+    .findings li strong { color: var(--ink); font-weight: 500; }
+
+    .principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .principle { background: var(--bg); padding: 28px 24px; }
+    .principle-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 200; font-style: italic; color: var(--border); margin-bottom: 8px; }
+    .principle-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; margin-bottom: 8px; }
+    .principle-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 32px 0; align-items: stretch; }
+    .process-step { padding: 28px 16px 0 16px; border-right: 1px solid var(--border); display: flex; flex-direction: column; min-height: 360px; }
+    .process-step:last-child { border-right: none; }
+    .step-num { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 200; font-style: italic; color: var(--border); margin-bottom: 12px; }
+    .step-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 300; margin-bottom: 8px; }
+    .step-detail { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+    .step-img { margin-top: auto; overflow: hidden; line-height: 0; width: 100%; aspect-ratio: 1 / 1; cursor: zoom-in; flex-shrink: 0; position: relative; border: 1px solid var(--border); }
+    .step-img img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; transition: transform 0.4s ease, filter 0.3s ease; filter: brightness(0.92); }
+    .step-img::after { content: '⊕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; background: rgba(13,13,11,0.45); opacity: 0; transition: opacity 0.25s ease; }
+    .step-img:hover img { transform: scale(1.06); filter: brightness(1); }
+    .step-img:hover::after { opacity: 1; }
+
+    .thumb-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin: 32px 0; }
+    .thumb-img { overflow: hidden; line-height: 0; width: 100%; aspect-ratio: 1 / 1; cursor: zoom-in; position: relative; border: 1px solid var(--border); }
+    .thumb-img img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; transition: transform 0.4s ease, filter 0.3s ease; filter: brightness(0.92); }
+    .thumb-img::after { content: '⊕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; background: rgba(13,13,11,0.45); opacity: 0; transition: opacity 0.25s ease; }
+    .thumb-img:hover img { transform: scale(1.06); filter: brightness(1); }
+    .thumb-img:hover::after { opacity: 1; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-overlay img { max-width: min(95vw, 1400px); max-height: 92vh; width: auto; display: block; box-shadow: 0 40px 100px rgba(0,0,0,0.7); transform: scale(0.96); transition: transform 0.3s ease; }
+    .modal-overlay.open img { transform: scale(1); }
+    .modal-close { position: fixed; top: 24px; right: 32px; font-size: 28px; color: rgba(255,255,255,0.6); cursor: pointer; background: none; border: none; line-height: 1; transition: color 0.2s; }
+    .modal-close:hover { color: #fff; }
+
+    .two-col-text { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 32px; }
+    .two-col-text h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; margin-bottom: 14px; }
+    .two-col-text h3 em { font-style: italic; }
+    .two-col-text p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+    .role-card { background: var(--ink); padding: 40px; margin: 32px 0; max-width: 720px; }
+    .role-card h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300; color: #fff; margin-bottom: 20px; }
+    .role-card ul { list-style: none; }
+    .role-card ul li { font-size: 14px; color: rgba(245,244,240,0.7); line-height: 1.8; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; gap: 12px; }
+    .role-card ul li::before { content: '↳'; color: var(--accent); flex-shrink: 0; }
+    .role-card ul li:last-child { border-bottom: none; }
+
+    .outcomes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin: 32px 0; }
+    .outcome-card { background: var(--ink); padding: 48px 40px; display: flex; flex-direction: column; gap: 0; }
+    .outcome-card-num { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 200; font-style: italic; color: rgba(255,255,255,0.07); line-height: 1; margin-bottom: 24px; }
+    .outcome-card-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .outcome-card strong { font-family: 'Fraunces', serif; color: #fff; display: block; font-size: clamp(20px, 2vw, 26px); font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .outcome-card strong em { font-style: italic; color: rgba(255,255,255,0.5); }
+    .outcome-card p { font-size: 13px; line-height: 1.85; color: rgba(245,244,240,0.5); border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; margin-top: auto; }
+
+    .well-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .well-col { background: var(--bg); padding: 32px 28px; }
+    .well-col h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; margin-bottom: 20px; }
+    .well-col h3 em { font-style: italic; }
+    .well-col ul { list-style: none; }
+    .well-col ul li { font-size: 14px; color: var(--muted); line-height: 1.7; padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: baseline; }
+    .well-col ul li:last-child { border-bottom: none; }
+    .well-col ul li::before { flex-shrink: 0; font-size: 13px; }
+    .went-well li::before { content: '✓'; color: #22c55e; }
+    .didnt-well li::before { content: '↯'; color: var(--accent); }
+
+    .qa-list { max-width: 720px; }
+    .qa-item { padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .qa-item:first-child { border-top: 1px solid var(--border); }
+    .qa-q { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; margin-bottom: 12px; color: var(--ink); }
+    .qa-a { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+    .problem-statements { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 40px; width: calc(100% + 96px); margin-left: -48px; }
+    .problem-card { background: var(--ink); padding: 64px 56px 56px; display: flex; flex-direction: column; gap: 0; }
+    .problem-num { font-family: 'Fraunces', serif; font-size: 72px; font-weight: 200; font-style: italic; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 32px; }
+    .problem-label { font-size: 10px; font-weight: 400; letter-spacing: 0.22em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+    .problem-title { font-family: 'Fraunces', serif; font-size: clamp(22px, 2vw, 28px); font-weight: 300; color: #fff; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .problem-title em { font-style: italic; color: rgba(255,255,255,0.5); }
+    .problem-desc { font-size: 13px; color: rgba(245,244,240,0.45); line-height: 1.8; margin-bottom: 40px; }
+    .problem-hmw { font-family: 'Fraunces', serif; font-size: clamp(16px, 1.6vw, 20px); font-weight: 300; font-style: italic; color: rgba(255,255,255,0.75); line-height: 1.55; margin-top: auto; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .problem-hmw strong { color: #fff; font-style: normal; font-weight: 400; }
+    @media (max-width: 768px) {
+      .problem-statements { grid-template-columns: 1fr; width: 100%; margin-left: 0; }
+      .problem-card { padding: 40px 32px; }
+    }
+
+    .process-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: calc(100% + 96px); margin-left: -48px; margin-top: 0; }
+    .process-gallery-item { background: var(--card-bg); display: flex; flex-direction: column; overflow: hidden; }
+    .process-gallery-label { display: flex; align-items: baseline; gap: 10px; padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+    .pgal-num { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 200; font-style: italic; color: var(--accent); line-height: 1; }
+    .pgal-name { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .process-gallery-item figure { overflow: hidden; flex: 1; }
+    .process-gallery-item figure img { width: 100%; display: block; object-fit: cover; transition: transform 0.5s ease; }
+    .process-gallery-item:hover figure img { transform: scale(1.03); }
+    @media (max-width: 768px) {
+      .process-gallery { grid-template-columns: 1fr 1fr; width: 100%; margin-left: 0; }
+    }
+
+    .testing-bento { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: calc(100% + 96px); margin-left: -48px; }
+    .t-card { background: var(--ink); padding: 52px 48px; }
+    .t-card-num { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 200; font-style: italic; color: rgba(255,255,255,0.25); line-height: 1; margin-bottom: 20px; }
+    .t-card-title { font-family: 'Fraunces', serif; font-size: clamp(22px, 2.2vw, 30px); font-weight: 300; color: #fff; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .t-card-title em { font-style: italic; color: var(--accent); }
+    .t-card-body { font-size: 14px; color: rgba(245,244,240,0.5); line-height: 1.85; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; }
+    .testing-video-full { width: calc(100% + 96px); margin-left: -48px; background: var(--dark); line-height: 0; }
+    .testing-video-full video { width: 100%; display: block; max-height: 600px; object-fit: contain; }
+    .testing-video-caption { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; text-transform: uppercase; padding: 14px 48px; background: var(--dark); }
+    @media (max-width: 768px) {
+      .testing-bento { grid-template-columns: 1fr; width: 100%; margin-left: 0; }
+      .testing-video-full { width: 100%; margin-left: 0; }
+      .t-card { padding: 36px 28px; }
+    }
+
+    .cs-nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 48px; border-top: 1px solid var(--border); background: var(--white); }
+    .cs-nav a { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s, gap 0.25s; }
+    .cs-nav a:hover { color: var(--ink); gap: 16px; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .cs-hero { padding-left: 24px; padding-right: 24px; }
+      .cs-body { padding: 64px 24px 80px; }
+      .img-full-dark { width: 100%; margin-left: 0; margin-right: 0; padding: 24px; }
+      .img-two, .principles, .outcomes, .two-col-text, .well-grid, .process-steps { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+      .cs-meta-row { gap: 24px; }
+      .cs-nav { padding: 32px 24px; flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">Amy Hirrell</a>
+    <a class="nav-back" href="index.html">← All work</a>
+  </nav>
+
+  <section class="cs-hero">
+    <div class="hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/playlist/pixel-galaxy.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="cs-hero-content">
+      <p class="cs-eyebrow">Case Study · 01 · Sky Glass</p>
+      <h1 class="cs-title">Playlist</h1>
+      <p class="cs-subtitle">Curating the household TV experience</p>
+      <div class="cs-meta-row">
+        <div><p class="cs-meta-label">Product Area</p><p class="cs-meta-value">TV Products, Sky Glass</p></div>
+        <div><p class="cs-meta-label">My Role</p><p class="cs-meta-value">Lead Designer</p></div>
+        <div><p class="cs-meta-label">Team</p><p class="cs-meta-value">Research, Design, Product &amp; Copy</p></div>
+        <div><p class="cs-meta-label">Scope</p><p class="cs-meta-value">End-to-end, insight through to shipped UI</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-body">
+
+    <!-- 1. THE BRIEF -->
+    <div class="section reveal">
+      <p class="section-label">The Brief</p>
+      <h2 class="section-heading">The initial <em>problem</em></h2>
+      <p class="body-text">
+        TV has always been a shared thing, with around <strong>90% of Sky Glass households watching together</strong>. But expectations were changing. Platforms like Netflix had made personal Profiles feel like the norm, and people were starting to expect that sense of ownership everywhere.
+      </p>
+      <p class="body-text">
+        Sky Glass is a household device though, not a personal one. So the challenge became: how do we bring that feeling of "this is mine" into Playlist without breaking the shared experience that makes Sky Glass what it is?
+      </p>
+      <p class="body-text">
+        The tricky part? When people hear "personalisation", they think recommendations, resume points, algorithms. The full treatment. We couldn't deliver that. Not yet. So we had to find a way to offer something genuinely useful without overpromising.
+      </p>
+      <div class="callout">
+        <p>"Deliver value through organisation first, not algorithmic complexity, while laying the foundations for future evolution."</p>
+      </div>
+
+      <div class="problem-statements">
+        <div class="problem-card">
+          <p class="problem-num">01</p>
+          <p class="problem-label">Problem</p>
+          <h3 class="problem-title">Organisation <em>vs.</em> togetherness</h3>
+          <p class="problem-desc">As Playlist libraries grow, shared lists become congested and hard to navigate, but the TV is still primarily a shared device.</p>
+          <p class="problem-hmw"><strong>How might we</strong> introduce personalisation without disrupting shared living room viewing?</p>
+        </div>
+        <div class="problem-card">
+          <p class="problem-num">02</p>
+          <p class="problem-label">Problem</p>
+          <h3 class="problem-title">Expectation <em>vs.</em> reality</h3>
+          <p class="problem-desc"><strong>Users associate "personalisation" with fully-fledged profiles, recommendations, resume points, algorithmic tailoring.</strong> We couldn't deliver that. Not yet.</p>
+          <p class="problem-hmw"><strong>How might we</strong> deliver meaningful value through curated lists while clearly setting expectations?</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 2. MY ROLE -->
+    <div class="section reveal">
+      <p class="section-label">My Role</p>
+      <h2 class="section-heading">How I <em>contributed</em></h2>
+      <p class="body-text">End-to-end ownership, from shaping the research approach and running workshops, through to prototyping, testing, and final shipped UI. Every stage, not just the design bit in the middle.</p>
+      <div class="role-card">
+        <h3>Lead Designer, end-to-end ownership</h3>
+        <ul>
+          <li>Defined the research approach and facilitated user needs studies alongside the research team</li>
+          <li>Led ideation workshops and concept development, exploring multiple directions before converging</li>
+          <li>Owned the interaction model, designing, prototyping and iterating on the core UX patterns</li>
+          <li>Ran and observed usability testing sessions, synthesising findings into design decisions</li>
+          <li>Crafted the final UI to production-ready quality, working closely with engineering on feasibility</li>
+          <li>Presented work to stakeholders and product leadership throughout, advocating for the user perspective</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 3. PROCESS & METHODS -->
+    <div class="section reveal">
+      <p class="section-label">Process &amp; Methods</p>
+      <h2 class="section-heading">How we <em>worked</em>, and why</h2>
+      <p class="body-text">We worked in a structured but iterative way, and the methods we chose mattered. Each one was picked to answer a specific question at the right time, not just to tick a process box.</p>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <p class="step-num">01</p>
+          <p class="step-name">Discover</p>
+          <p class="step-detail">Before we could generate ideas, we needed to understand what was actually happening, not what we assumed was happening. User needs studies and household dynamics research gave us a grounded starting point.</p>
+          <figure class="step-img"><img src="assets/playlist/process-discover.png" alt="Discovery and insights summary" /></figure>
+        </div>
+        <div class="process-step">
+          <p class="step-num">02</p>
+          <p class="step-name">Define</p>
+          <p class="step-detail">With competing priorities pulling in different directions, we needed clear principles to help us make decisions confidently. Problem framing and opportunity mapping helped us land on what we were actually trying to solve.</p>
+          <figure class="step-img"><img src="assets/playlist/process-define.png" alt="Defining the problem" /></figure>
+        </div>
+        <div class="process-step">
+          <p class="step-num">03</p>
+          <p class="step-name">Ideate &amp; Design</p>
+          <p class="step-detail">We started with sketches and low-fi concepts to get a range of ideas on the table quickly, before moving into high-fidelity UI. Running multiple concepts in parallel meant we weren't betting everything on a single direction.</p>
+          <figure class="step-img"><img src="assets/playlist/process-ideate.png" alt="UX flows and design specs" /></figure>
+        </div>
+        <div class="process-step">
+          <p class="step-num">04</p>
+          <p class="step-name">Test &amp; Deliver</p>
+          <p class="step-detail">Testing on real Sky Glass hardware was non-negotiable. Remote interaction patterns behave completely differently to touch, something that only becomes obvious when you watch someone actually use it on their sofa.</p>
+          <figure class="step-img"><img src="assets/playlist/process-testing.png" alt="User testing" /></figure>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 4. DISCOVERY -->
+    <div class="section reveal">
+      <p class="section-label">Discovery &amp; Insights</p>
+      <h2 class="section-heading">What we <em>found</em></h2>
+      <p class="body-text">We ran user needs studies and dug into behavioural data to understand how people were really using Playlist, not how we hoped they were using it. A few things stood out clearly.</p>
+
+      <ul class="findings">
+        <li><strong>Large, shared playlists were becoming congested.</strong> Content from different household members was mixing, making it increasingly hard to find what you'd personally saved.</li>
+        <li><strong>Users value organising over recommendations.</strong> "Storing and curating" content mattered more to users than algorithmic suggestions. Organisation was the unmet need.</li>
+        <li><strong>Personalisation is expected, but not at the cost of simplicity.</strong> Users wanted a sense of ownership without the friction of switching profiles or managing a separate identity.</li>
+        <li><strong>Remote shortcuts were underused and poorly discovered.</strong> Quick-add behaviours were technically possible but invisible to the majority of users, representing an untapped interaction opportunity.</li>
+      </ul>
+    </div>
+
+    <div class="thumb-grid reveal">
+      <figure class="thumb-img"><img src="assets/playlist/what-we-found-2.png" alt="Research key findings" /></figure>
+      <figure class="thumb-img"><img src="assets/playlist/what-we-found-1.png" alt="Overall experience GEM scores" /></figure>
+      <figure class="thumb-img"><img src="assets/playlist/strategy.png" alt="Personalised lists strategy" /></figure>
+      <figure class="thumb-img"><img src="assets/playlist/household-dynamics.png" alt="Household dynamics" /></figure>
+    </div>
+
+    <hr />
+
+    <!-- 5. IDEATION -->
+    <div class="section reveal">
+      <p class="section-label">Ideation</p>
+      <h2 class="section-heading">How we <em>generated ideas</em></h2>
+      <p class="body-text">Full Profiles were the obvious answer, but resume points weren't technically possible at this stage, which meant promising a full personalisation system would have set expectations we couldn't meet. The real tension throughout this project was that gap: between what users associated with personalisation and what we could actually deliver. So before converging, we pushed ourselves to question whether Profiles was even the right framing at all.</p>
+
+      <div class="two-col-text">
+        <div>
+          <h3>Concepts <em>explored</em></h3>
+          <p>We looked at full household profiles (too much friction for a shared device), a tag-based filtering system (way too complex for remote navigation), a simple "My List" shortcut layer (promising, but limited), and ultimately landed on the layered Shared + Personal model, the one that actually balanced simplicity with something meaningful.</p>
+          <div class="thumb-img" style="margin-top:16px;aspect-ratio:16/9;">
+            <img src="assets/playlist/browse-by-list-filters.png" alt="Concepts explored — browse by list filters" style="object-position:center top;" />
+          </div>
+        </div>
+        <div>
+          <h3>How we <em>converged</em></h3>
+          <p>We ran each concept against our four design principles and pushed hard on the 90% shared-household insight. If an idea required people to step away from the shared experience, it was out. Avatar-based identity emerged as the lightest-weight way to give people a personal feeling without building a full profile system.</p>
+          <div class="thumb-img" style="margin-top:16px;aspect-ratio:16/9;">
+            <img src="assets/playlist/how-we-converged-avatar-selection.png" alt="How we converged — avatar selection" style="object-position:center top;" />
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p>"The question wasn't 'how do we build Profiles?', it was 'what is the minimum meaningful personalisation that doesn't fragment the household experience?'"</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 6. DESIGN PRINCIPLES -->
+    <div class="section reveal">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-heading">The principles that <em>guided every decision</em></h2>
+      <p class="body-text">These weren't just nice-sounding statements on a slide. They were working tools, used constantly throughout the project to make decisions and settle debates when opinions diverged.</p>
+      <div class="principles">
+        <div class="principle">
+          <p class="principle-num">01</p>
+          <p class="principle-name">Shared by default</p>
+          <p class="principle-desc">The household playlist remains the anchor, nothing disrupts communal viewing as the primary ritual. Every design decision was tested against this.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">02</p>
+          <p class="principle-name">Opt-in personalisation</p>
+          <p class="principle-desc">Personal lists are additive and voluntary. No forced interstitials. No friction on the path to watching. Users come to watch, not to manage.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">03</p>
+          <p class="principle-name">Low-friction remote interaction</p>
+          <p class="principle-desc">Single-press interactions throughout. Designing for a remote control is fundamentally different to touch, every additional step has an outsized cost on the sofa.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-num">04</p>
+          <p class="principle-name">Clear expectation setting</p>
+          <p class="principle-desc">Naming and copy were critical to position this as organisational, not algorithmic, avoiding the trust erosion that comes from overpromising personalisation.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 7. TESTING & VALIDATION -->
+    <div class="section reveal">
+      <p class="section-label">Testing &amp; Validation</p>
+      <h2 class="section-heading">How we validated <em>with real users</em></h2>
+      <p class="body-text">We tested early and often. Starting at low fidelity meant we could validate the direction before investing in the detail, then refine as we moved up to higher fidelity prototypes.</p>
+    </div>
+
+    <div class="testing-bento reveal">
+      <div class="t-card">
+        <p class="t-card-num">01</p>
+        <h3 class="t-card-title">Single Press <em>vs</em> Long Press</h3>
+        <p class="t-card-body">Long Press was consistently perceived as confusing and unexpected on a TV remote. Single Press won clearly and became the foundational interaction pattern.</p>
+      </div>
+      <div class="t-card">
+        <p class="t-card-num">02</p>
+        <h3 class="t-card-title">Avatar identity <em>vs</em> full Profiles</h3>
+        <p class="t-card-body">Users responded positively to avatar-based identity as a lightweight ownership signal, without triggering expectations of full profile features that "Profiles" language would have.</p>
+      </div>
+      <div class="t-card">
+        <p class="t-card-num">03</p>
+        <h3 class="t-card-title">Naming <em>and</em> copy testing</h3>
+        <p class="t-card-body">Language implying algorithmic personalisation consistently set the wrong expectations. The final naming was validated to feel organisational rather than predictive.</p>
+      </div>
+      <div class="t-card">
+        <p class="t-card-num">04</p>
+        <h3 class="t-card-title">Shared <em>vs</em> Personal entry points</h3>
+        <p class="t-card-body">Users understood the layered model clearly when framed correctly. Personal list creation created no confusion around the shared list.</p>
+      </div>
+    </div>
+
+    <div class="testing-video-full reveal" style="margin-top: 64px;">
+      <video id="testing-video" loop playsinline controls>
+        <source src="assets/playlist/testing-prototype.mp4" type="video/mp4" />
+      </video>
+      <p class="testing-video-caption">Prototype testing session</p>
+    </div>
+
+    <div class="img-two reveal" style="justify-items: center; margin-top: 64px; margin-bottom: 0;">
+      <figure>
+        <img src="assets/playlist/user-testing-note-taking-1.png" alt="Figma prototype pages overview" />
+        <p class="img-caption">Figma prototype pages overview</p>
+      </figure>
+      <figure>
+        <img src="assets/playlist/user-testing-hifi.png" alt="High fidelity prototype used in testing" />
+        <p class="img-caption">High fidelity prototype</p>
+      </figure>
+    </div>
+
+    <hr />
+
+    <!-- 8. CUSTOMER & BUSINESS BALANCE -->
+    <div class="section reveal">
+      <p class="section-label">Customer &amp; Business</p>
+      <h2 class="section-heading">Championing the user <em>while meeting business needs</em></h2>
+      <p class="body-text">There was a real tension to navigate here. The business case for personalisation was strong: more engagement, a point of difference from competitors, and a hook for future features. But our research was pretty clear that forcing a full profile model would chip away at the household experience that made Sky Glass distinctive.</p>
+
+      <div class="two-col-text">
+        <div>
+          <h3>The <em>user</em> case</h3>
+          <p>People wanted Playlist to feel like theirs, without having to switch profiles or manage a separate identity every time they sat down to watch. Organisation was the real gap, not algorithms. I kept coming back to the research to hold that line, especially when conversations veered towards building something more complex.</p>
+        </div>
+        <div>
+          <h3>The <em>business</em> case</h3>
+          <p>Rather than framing this as a compromise, I made the case for it being a foundation. By building the system with future flexibility in mind, we delivered something genuinely useful now while leaving the door open for deeper personalisation down the line. That's a much easier sell than asking people to wait for perfection.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p>"I made the case that a simpler, trusted feature used daily was more strategically valuable than a complex one that eroded confidence in the platform."</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 9. THE CONCEPT & DELIVERY -->
+    <div class="section reveal">
+      <p class="section-label">The Concept</p>
+      <h2 class="section-heading">Evolving <em>Playlist</em></h2>
+      <p class="body-text">What we landed on was a layered system, one that kept the shared experience at the centre while making room for a bit of personal organisation on the side:</p>
+
+      <ul class="findings">
+        <li><strong>Shared view (default)</strong> what we watch together. The household anchor, unchanged and always accessible as the primary entry point.</li>
+        <li><strong>Optional personalised lists</strong> curated by individuals, opt-in, non-disruptive to the shared ritual and additive to the overall system.</li>
+        <li><strong>Avatar-based identity</strong> a lightweight personal presence that creates ownership without the overhead of full profile management or false algorithmic expectations.</li>
+        <li><strong>Quick add / remove via remote shortcut</strong> surfacing a previously invisible interaction to drive adoption and make personal curation feel effortless.</li>
+      </ul>
+    </div>
+
+    <div class="img-full-dark reveal">
+      <img src="assets/playlist/playlist-screens.png" alt="Playlist, screens overview" />
+    </div>
+
+    <!-- COLLABORATION -->
+    <div class="section reveal" style="margin-top: 72px;">
+      <p class="section-label">Collaboration</p>
+      <h2 class="section-heading">Working with <em>peers and stakeholders</em></h2>
+      <p class="body-text">This was a proper team effort from day one. Doing it well meant staying in sync across research, product, engineering and copy, and making sure the right people were involved at the right moments.</p>
+
+      <div class="two-col-text">
+        <div>
+          <h3>Working with <em>the team</em></h3>
+          <p>I worked closely with the research team to shape the study from the ground up, and the quality of our findings depended on asking the right questions, not just any questions. Copy were involved throughout, because naming and language turned out to be just as important as the visual design. Engineering came in early too, so we weren't designing anything that couldn't actually be built.</p>
+        </div>
+        <div>
+          <h3>Working with <em>stakeholders</em></h3>
+          <p>I ran regular show-and-tells with product leadership and used the research as my main tool for making design decisions land. When there was pressure to speed up or cut testing rounds, I made the case, backed by data, for why those moments were worth protecting. Getting buy-in on the principles early meant far fewer debates later on.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="img-two reveal">
+      <figure>
+        <img src="assets/playlist/workshop.png" alt="Working group Miro board" />
+        <p class="img-caption">Working group Miro board</p>
+      </figure>
+      <figure>
+        <img src="assets/playlist/user-testing-note-taking-1.png" alt="Figma prototype pages overview" />
+        <p class="img-caption">Figma prototype pages overview</p>
+      </figure>
+    </div>
+
+    <hr />
+
+    <!-- 10. MEASURING SUCCESS -->
+    <div class="section reveal">
+      <p class="section-label">Measuring Success</p>
+      <h2 class="section-heading">How we knew <em>it worked</em></h2>
+      <p class="body-text">We were looking at three things: did it work for people straight away, did it stick around, and did it open doors for what came next.</p>
+
+      <div class="testing-bento">
+        <div class="t-card">
+          <p class="t-card-num">01</p>
+          <h3 class="t-card-title">Task completion <em>in testing</em></h3>
+          <p class="t-card-body">Users successfully created and managed personal lists without instruction. Single-press interactions passed with high confidence across multiple test cohorts.</p>
+        </div>
+        <div class="t-card">
+          <p class="t-card-num">02</p>
+          <h3 class="t-card-title">Ongoing <em>platform investment</em></h3>
+          <p class="t-card-body">Playlist was not deprecated. Sky continued building new UI layers and personalisation features on top of the foundation, a strong signal that the feature delivered lasting value.</p>
+        </div>
+        <div class="t-card">
+          <p class="t-card-num">03</p>
+          <h3 class="t-card-title">Global <em>syndication demand</em></h3>
+          <p class="t-card-body">Syndication partners expressed desire to continue building on the feature, validating its international relevance and scalability beyond the initial UK market.</p>
+        </div>
+        <div class="t-card">
+          <p class="t-card-num">04</p>
+          <h3 class="t-card-title">Cross-feature <em>expansion</em></h3>
+          <p class="t-card-body">The interaction patterns were adopted into voice, avatars and manage-all features, demonstrating that the underlying model was extensible, not a one-off solution.</p>
+        </div>
+      </div>
+
+      <div class="img-full-dark reveal" style="padding: 0; margin-top: 40px;">
+        <video id="playlist-ui-video" loop playsinline controls style="width:100%;display:block;">
+          <source src="assets/playlist/playlist-ui-1.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- WHAT WENT WELL / DIDN'T -->
+    <div class="section reveal">
+      <p class="section-label">Honest Reflection</p>
+      <h2 class="section-heading">What went well, <em>and what didn't</em></h2>
+
+      <div class="well-grid">
+        <div class="well-col">
+          <h3>What went <em>well</em></h3>
+          <ul class="went-well">
+            <li>Starting with a clear set of design principles gave the whole team a shared language, which made disagreements easier to resolve and kept us moving faster</li>
+            <li>Bringing engineering in early meant no nasty surprises when it came to building, because we'd already stress-tested the interaction model together</li>
+            <li>Catching the Long Press vs Single Press issue in testing before it was built saved a significant amount of rework down the line</li>
+            <li>Reframing "personalisation" as "organisation" with stakeholders was the real unlock. Once that landed, a lot of the scope debates dissolved</li>
+          </ul>
+        </div>
+        <div class="well-col">
+          <h3>What <em>didn't</em></h3>
+          <ul class="didnt-well">
+            <li>The naming and copy work crept to the end of the process when it deserved a proper chunk of time much earlier. Language is design, and it needed to be treated that way from the start</li>
+            <li>Early stakeholder pressure toward full Profiles meant some of our discovery time went on making the case against the wrong direction, rather than exploring the right one</li>
+            <li>Some of the remote shortcut discoverability work got descoped post-launch. The interaction was there, but awareness never reached where it should have been</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- LEARNINGS -->
+    <div class="section reveal">
+      <p class="section-label">Learnings &amp; Reflections</p>
+      <h2 class="section-heading">What I took <em>away</em></h2>
+
+      <div class="qa-list">
+        <div class="qa-item">
+          <p class="qa-q">Design principles are most valuable when they're genuinely constraining</p>
+          <p class="qa-a">The four principles we defined weren't aspirational, they actively ruled things out. "Shared by default" killed several concepts that might otherwise have gone around in circles for weeks. I'll always set these earlier now; the sooner they're in place, the more useful they are.</p>
+        </div>
+        <div class="qa-item">
+          <p class="qa-q">Language is design, naming deserves the same rigour as interaction</p>
+          <p class="qa-a">The difference between "Profiles" and what we shipped was as much a naming problem as a UX one. I came away from this project with a much stronger instinct for getting copy involved early and treating language decisions with the same care as interaction decisions.</p>
+        </div>
+        <div class="qa-item">
+          <p class="qa-q">Designing for simplicity at scale requires defending it continuously</p>
+          <p class="qa-a">There were so many moments where complexity tried to creep back in: extra features, edge cases, "just one more option." Being able to say no, and backing it up with user data, turned out to be just as important as any design decision I made.</p>
+        </div>
+        <div class="qa-item">
+          <p class="qa-q">Platform constraints are a creative tool, not just a limitation</p>
+          <p class="qa-a">Designing for a TV remote pushed us to think much harder about every interaction than we would have on touch. The constraint of single-press interactions actually produced a cleaner, more considered solution than a more open environment might have allowed. Constraints can be a gift.</p>
+        </div>
+        <div class="qa-item">
+          <p class="qa-q">Building for extensibility pays back over time</p>
+          <p class="qa-a">Designing this as a foundation rather than a finished product proved to be the right call. Years later, the patterns and infrastructure are still being built on. That's the kind of outcome that matters to me, something that outlasts the brief it was built for.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-overlay" id="imgModal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <img id="modalImg" src="" alt="" />
+  </div>
+
+  <div class="cs-nav">
+    <a href="index.html">← Back to all work</a>
+    <a href="cs-design-system.html">Next: Foundations →</a>
+  </div>
+
+  <script>
+    // Modal lightbox
+    const modal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalClose = document.getElementById('modalClose');
+
+    document.querySelectorAll('.step-img, .img-two figure, .thumb-img').forEach(fig => {
+      fig.addEventListener('click', () => {
+        const src = fig.querySelector('img').src;
+        const alt = fig.querySelector('img').alt;
+        modalImg.src = src;
+        modalImg.alt = alt;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  </script>
+</body>
+</html>
