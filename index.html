@@ -13,7 +13,7 @@
     :root {
       --bg: #F5F4F0;
       --ink: #0D0D0B;
-      --muted: #7A7870;
+      --muted: #6B685F;
       --border: #DDDAD4;
       --accent: #FF4500;
       --white: #FFFFFF;
@@ -30,6 +30,7 @@
       line-height: 1.65;
       overflow-x: hidden;
     }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
     /* ── NAV ── */
     nav {
@@ -129,7 +130,7 @@
       animation: marquee 24s linear infinite;
     }
     .marquee-track span {
-      font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--muted); flex-shrink: 0;
     }
     .marquee-track .accent { color: var(--accent); font-style: normal; }
@@ -147,7 +148,7 @@
     }
     .work-title em { font-style: italic; }
     .work-count {
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--muted);
     }
 
@@ -169,7 +170,7 @@
     .case-main { }
     .case-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
     .case-tag {
-      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
       padding: 4px 10px; border: 1px solid var(--border);
       color: var(--muted);
     }
@@ -203,7 +204,7 @@
 
     .case-arrow {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--accent); margin-top: 16px;
       opacity: 0; transition: opacity 0.2s;
     }
@@ -214,7 +215,7 @@
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
     .about-left { }
     .about-eyebrow {
-      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--accent); margin-bottom: 20px;
     }
     .about-heading {
@@ -223,11 +224,11 @@
       letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 32px;
     }
     .about-heading em { font-style: italic; }
-    .about-body { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 24px; }
+    .about-body { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 24px; }
     .about-body strong { color: var(--ink); font-weight: 500; }
     .about-link {
       display: inline-flex; align-items: center; gap: 10px;
-      font-size: 13px; letter-spacing: 0.08em;
+      font-size: 15px; letter-spacing: 0.08em;
       color: var(--ink); text-decoration: none;
       border-bottom: 1px solid var(--accent);
       padding-bottom: 2px;
@@ -252,12 +253,12 @@
       font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300;
       margin-bottom: 8px; letter-spacing: -0.01em;
     }
-    .skill-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .skill-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
 
     /* ── PROCESS ── */
     .process { padding: 96px 48px; }
     .process-eyebrow {
-      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 20px;
     }
     .process-heading {
@@ -283,7 +284,7 @@
       font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300;
       margin-bottom: 12px; letter-spacing: -0.01em;
     }
-    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    .step-desc { font-size: 15px; color: var(--muted); line-height: 1.75; }
     .process-step:nth-child(n+2) { padding-left: 32px; }
 
     /* ── CONTACT ── */
@@ -293,8 +294,8 @@
     }
     .contact-inner { max-width: 860px; }
     .contact-eyebrow {
-      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(245,244,240,0.4); margin-bottom: 20px;
+      font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,244,240,0.72); margin-bottom: 20px;
     }
     .contact-heading {
       font-family: 'Fraunces', serif;
@@ -302,23 +303,23 @@
       letter-spacing: -0.03em; line-height: 0.95;
       margin-bottom: 40px;
     }
-    .contact-heading em { font-style: italic; color: rgba(245,244,240,0.5); }
+    .contact-heading em { font-style: italic; color: rgba(245,244,240,0.72); }
     .contact-sub {
-      font-size: 16px; color: rgba(245,244,240,0.55);
+      font-size: 16px; color: rgba(245,244,240,0.80);
       max-width: 440px; line-height: 1.8; margin-bottom: 48px;
     }
     .contact-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-light {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 16px 32px; background: var(--bg); color: var(--ink);
-      text-decoration: none; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
       transition: background 0.2s, gap 0.25s;
     }
     .btn-light:hover { background: #e8e7e3; gap: 16px; }
     .btn-outline-light {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 16px 32px; border: 1px solid rgba(245,244,240,0.25); color: var(--bg);
-      text-decoration: none; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
       transition: border-color 0.2s, gap 0.25s;
     }
     .btn-outline-light:hover { border-color: var(--bg); gap: 16px; }
@@ -331,13 +332,13 @@
     }
     .footer-logo {
       font-family: 'Fraunces', serif; font-size: 16px; font-weight: 300;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.75);
     }
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 14px; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
     .footer-social { display: flex; gap: 24px; }
     .footer-social a {
-      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-      text-decoration: none; color: rgba(255,255,255,0.35);
+      font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: rgba(255,255,255,0.65);
       transition: color 0.2s;
     }
     .footer-social a:hover { color: #fff; }
@@ -359,7 +360,8 @@
 
     @media (max-width: 900px) {
       nav { padding: 0 24px; }
-      .hero { padding: 0 24px 56px; }
+      .nav-links { display: none; }
+      .hero { padding: 120px 24px 56px; min-height: unset; justify-content: flex-start; }
       .hero-headline .line2 { padding-left: 0; }
       .work, .about, .process, .contact, footer { padding-left: 24px; padding-right: 24px; }
       .case-item { grid-template-columns: 1fr; }
