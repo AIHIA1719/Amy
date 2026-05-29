@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +24,10 @@
     .nav-back { display: flex; align-items: center; gap: 8px; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: color 0.2s, gap 0.25s; }
     .nav-back:hover { color: #fff; gap: 14px; }
 
-    .cs-hero { padding-top: 64px; min-height: 88vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 72px; padding-left: 48px; padding-right: 48px; background: linear-gradient(145deg, #0A1628 0%, #0E2347 40%, #133068 75%, #0A1628 100%); }
-    .hero-flame { position: absolute; right: 0; top: 0; bottom: 0; width: 55%; opacity: 0.06; background: radial-gradient(ellipse at 80% 40%, #0085CA 0%, transparent 55%), radial-gradient(ellipse at 60% 70%, #FF4500 0%, transparent 45%); pointer-events: none; }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 64px 64px; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,22,40,0.96) 0%, rgba(10,22,40,0.4) 60%, transparent 100%); }
+    .cs-hero { padding-top: 64px; min-height: 88vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 72px; padding-left: 48px; padding-right: 48px; }
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; }
+    .hero-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,22,40,0.97) 0%, rgba(10,22,40,0.65) 50%, rgba(10,22,40,0.3) 100%); }
     .cs-hero-content { position: relative; z-index: 1; }
     .cs-eyebrow { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 20px; }
     .cs-title { font-family: 'Fraunces', serif; font-size: clamp(64px, 10vw, 128px); font-weight: 200; line-height: 0.92; letter-spacing: -0.03em; color: #fff; margin-bottom: 16px; }
@@ -82,12 +83,6 @@
     .o-card-title em { font-style: italic; color: rgba(255,255,255,0.45); }
     .o-card-body { font-size: 16px; color: rgba(245,244,240,0.82); line-height: 1.85; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 20px; }
 
-    /* Stat blocks */
-    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 40px 0; }
-    .stat-block { background: var(--bg); padding: 36px 28px; }
-    .stat-num { font-family: 'Fraunces', serif; font-size: clamp(40px, 5vw, 64px); font-weight: 200; font-style: italic; color: var(--ink); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
-    .stat-label { font-size: 14px; color: var(--muted); letter-spacing: 0.04em; line-height: 1.5; }
-
     /* Component showcase block */
     .component-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
     .component-card { background: var(--bg); padding: 24px; }
@@ -95,17 +90,26 @@
     .component-name { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 300; margin-bottom: 8px; }
     .component-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
-    /* Typography showcase */
-    .type-showcase { background: var(--dark); padding: 48px; margin: 32px 0; width: calc(100% + 96px); margin-left: -48px; }
-    .type-row { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 20px 0; display: flex; align-items: baseline; gap: 24px; }
-    .type-row:last-child { border-bottom: none; }
-    .type-size { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65); width: 80px; flex-shrink: 0; }
-    .type-sample { color: #fff; line-height: 1; }
-    .type-h1 { font-family: 'Fraunces', serif; font-size: clamp(32px, 5vw, 70px); font-weight: 200; letter-spacing: -0.02em; }
-    .type-h2 { font-family: 'Fraunces', serif; font-size: clamp(24px, 3.5vw, 50px); font-weight: 200; }
-    .type-h3 { font-family: 'Fraunces', serif; font-size: clamp(18px, 2.5vw, 30px); font-weight: 200; }
-    .type-body { font-size: 16px; font-weight: 300; }
-    .type-small { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.6); }
+    /* Style guide elements grid */
+    .style-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .style-card { background: var(--bg); padding: 28px 24px; }
+    .style-card-icon { font-size: 28px; margin-bottom: 14px; }
+    .style-card-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; margin-bottom: 10px; }
+    .style-card-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* Colour swatches */
+    .colour-section { margin: 40px 0; }
+    .colour-group { margin-bottom: 32px; }
+    .colour-group-label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .colour-swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+    .swatch { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
+
+    /* TOV cards */
+    .tov-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .tov-card { background: var(--dark); padding: 32px 28px; }
+    .tov-card-label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .tov-card-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300; color: #fff; margin-bottom: 14px; }
+    .tov-card-body { font-size: 14px; color: rgba(245,244,240,0.7); line-height: 1.75; }
 
     /* Responsive breakpoints visual */
     .breakpoint-row { display: flex; align-items: flex-end; gap: 16px; margin: 32px 0; padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -127,6 +131,16 @@
     .well-col ul li::before { flex-shrink: 0; font-size: 13px; }
     .went-well li::before { content: '✓'; color: #22c55e; }
     .didnt-well li::before { content: '↯'; color: var(--accent); }
+
+    /* Live library banner */
+    .live-library-banner { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--ink); border: 1px solid rgba(255,255,255,0.08); padding: 28px 32px; margin: 40px 0; flex-wrap: wrap; }
+    .live-library-banner-left { display: flex; align-items: center; gap: 16px; }
+    .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: livepulse 2s ease-in-out infinite; }
+    .live-library-label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .live-library-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; color: #fff; }
+    .live-library-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.87); text-decoration: none; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; transition: border-color 0.2s, gap 0.25s, color 0.2s; white-space: nowrap; }
+    .live-library-link:hover { border-color: #fff; color: #fff; gap: 16px; }
+    @keyframes livepulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
 
     .cs-nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 48px; border-top: 1px solid var(--border); background: var(--white); }
     .cs-nav a { display: flex; align-items: center; gap: 10px; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s, gap 0.25s; }
@@ -156,10 +170,9 @@
       nav { padding: 0 24px; }
       .cs-hero { padding-left: 24px; padding-right: 24px; }
       .cs-body { padding: 64px 24px 80px; }
-      .type-showcase { width: 100%; margin-left: 0; padding: 32px 24px; }
       .outcomes-bento { grid-template-columns: 1fr; width: 100%; margin-left: 0; }
       .o-card { padding: 36px 28px; }
-      .two-col-text, .principles, .well-grid, .stat-row, .component-grid { grid-template-columns: 1fr; }
+      .two-col-text, .principles, .well-grid, .component-grid, .style-grid, .tov-grid { grid-template-columns: 1fr; }
       .breakpoint-row { gap: 10px; }
       .bp-xl { width: 120px; }
       .bp-md { width: 90px; }
@@ -169,6 +182,7 @@
       .cs-nav { padding: 32px 24px; flex-direction: column; gap: 20px; }
       .img-full { width: 100%; margin-left: 0; margin-right: 0; }
       .img-two { grid-template-columns: 1fr; }
+      .live-library-banner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -180,17 +194,17 @@
   </nav>
 
   <section class="cs-hero">
-    <div class="hero-grid"></div>
-    <div class="hero-flame"></div>
-    <div class="hero-overlay"></div>
+    <div class="hero-bg">
+      <img src="assets/british-gas/hive-hero.jpg" alt="Hive — smart home control from your mobile phone" />
+    </div>
     <div class="cs-hero-content">
       <p class="cs-eyebrow">Case Study · 02 · British Gas</p>
-      <div class="award-pill">Award-winning work</div>
+      <div class="award-pill">🏆 British Gas IS Award winner</div>
       <h1 class="cs-title">Foundations</h1>
       <p class="cs-subtitle">Scaling design across British Gas's first digital transformation</p>
       <div class="cs-meta-row">
         <div><p class="cs-meta-label">Product Area</p><p class="cs-meta-value">britishgas.co.uk · Web Platform</p></div>
-        <div><p class="cs-meta-label">My Role</p><p class="cs-meta-value">Senior Product Designer</p></div>
+        <div><p class="cs-meta-label">My Role</p><p class="cs-meta-value">Lead UI/UX Designer</p></div>
         <div><p class="cs-meta-label">Team</p><p class="cs-meta-value">UX, UI Dev, Product, Brand, CMS</p></div>
         <div><p class="cs-meta-label">Scope</p><p class="cs-meta-value">Responsive redesign · Style guide · Pattern library</p></div>
       </div>
@@ -202,15 +216,15 @@
     <!-- 1. THE CONTEXT -->
     <div class="section reveal">
       <p class="section-label">The Context</p>
-      <h2 class="section-heading">A brand going <em>digital for the first time</em></h2>
+      <h2 class="section-heading">Translating a brand <em>into the digital age</em></h2>
       <p class="body-text">
-        British Gas had a clear offline identity. The flame. The navy. The brand voice. But their digital presence hadn't kept pace. The website had grown organically over years, page by page, team by team, without a shared system to hold it together. Different screens looked like they belonged to different companies.
+        British Gas had undergone a full rebrand — a new visual identity with a distinctive flame supergraphic, a custom typeface, a defined colour palette and a clear tone of voice. On paper, it was compelling. Online, it didn't exist yet. The website had grown organically over years, page by page, team by team, with no shared system to hold it together. Different screens looked like they belonged to different companies.
       </p>
       <p class="body-text">
-        This was the moment to change that. <strong>The first full digital transformation for one of the UK's biggest household brands</strong>, starting with a complete responsive redesign of britishgas.co.uk and the creation of the tools that would make design scalable going forward: a style guide and pattern library, built from scratch.
+        This project was the digital expression of that new Brand VI — <strong>the first full digital transformation for one of the UK's biggest household brands.</strong> It meant rebuilding britishgas.co.uk from the ground up, responsively, while simultaneously creating the tools that would make design scalable going forward: a comprehensive digital style guide and a first-ever pattern library.
       </p>
       <div class="callout">
-        <p>"Our central drive is to make our customers' lives a little simpler. Clear and simple, friendly and patient, expert and reassuring."</p>
+        <p>"Our central drive is to make our customers' lives a little simpler — clear and simple, friendly and patient, expert and reassuring."</p>
       </div>
 
       <div class="img-full reveal">
@@ -225,16 +239,16 @@
     <div class="section reveal">
       <p class="section-label">My Role</p>
       <h2 class="section-heading">How I <em>contributed</em></h2>
-      <p class="body-text">I joined as Lead UI/UX Designer at a point where the brief was broad and the process was still being defined. A lot of my value came from shaping not just the design, but how the team worked and what we were building toward.</p>
+      <p class="body-text">I joined as Lead UI/UX Designer at a point where the brief was broad and the process was still being defined. I presented the Digital Style Guide and Pattern Library to the wider organisation alongside the technical lead — making the case not just for what we'd built, but why everyone in the business should care about it.</p>
       <div class="role-card">
-        <h3>Senior Product Designer</h3>
+        <h3>Lead UI/UX Designer</h3>
         <ul>
           <li>Designed the new responsive britishgas.co.uk from the ground up, across four breakpoints</li>
-          <li>Created British Gas's first digital style guide, translating brand identity into web-specific rules</li>
-          <li>Built and maintained the first pattern library, establishing reusable components used across the entire site</li>
-          <li>Introduced new working processes, including working in agile squads, which was new to the organisation</li>
-          <li>Collaborated across UX, UI development, product, brand, CMS and test teams</li>
-          <li>Presented and aligned work with stakeholders and the wider brand team throughout</li>
+          <li>Created British Gas's first digital style guide — translating the new Brand VI into a comprehensive set of web-specific rules</li>
+          <li>Built and maintained the first pattern library, establishing reusable, user-tested components used across the entire site</li>
+          <li>Co-presented the style guide and pattern library to the wider organisation, covering the digital style guide, pattern library, overall purpose and audience</li>
+          <li>Introduced agile squad working processes, which were new to the organisation at the time</li>
+          <li>Collaborated across UX, UI development, product, brand, CMS, test, BA and SA teams</li>
         </ul>
       </div>
     </div>
@@ -246,63 +260,141 @@
       <p class="section-label">The Challenge</p>
       <h2 class="section-heading">Design at scale, <em>without the scaffolding</em></h2>
       <p class="body-text">Before this project, there was no single source of truth for how britishgas.co.uk should look or behave. Designs were produced page by page. Decisions that had been made once were made again, differently, somewhere else. Forms existed in multiple inconsistent variants. Components were rebuilt rather than reused.</p>
-      <p class="body-text">At the same time, the world had moved on. Mobile traffic was rising sharply and the site wasn't built to meet it. <strong>The whole thing needed to be rebuilt responsively, coherently, and in a way that a large multi-disciplinary team could maintain and extend without losing consistency.</strong></p>
+      <p class="body-text">At the same time, the world had moved on. Mobile traffic was rising sharply and the site wasn't built to meet it. <strong>The whole thing needed to be rebuilt responsively, coherently, and in a way that a large multi-disciplinary team could maintain and extend without losing consistency.</strong> And it needed to actually feel like British Gas — a brand that had just been refreshed and needed its digital channels to catch up.</p>
 
       <div class="two-col-text" style="margin-top: 40px;">
         <div>
-          <h3>The <em>design problem</em></h3>
-          <p>No shared system meant no consistency. Every team was solving the same problems independently, producing divergent output and burning time. Brand identity wasn't translating to digital in any coherent way. The site felt like a patchwork.</p>
+          <h3>The <em>brand problem</em></h3>
+          <p>A new visual identity existed offline but had no digital translation. The BG Flame typeface, the supergraphic system, the defined colour palettes — none of it was codified for web. Every team was making their own decisions, producing divergent output. The site felt like a patchwork.</p>
         </div>
         <div>
-          <h3>The <em>delivery problem</em></h3>
-          <p>A brand of British Gas's scale needed a process that could scale with it. Individual design decisions don't work when you have squads shipping across dozens of pages simultaneously. The system had to become the design.</p>
+          <h3>The <em>scale problem</em></h3>
+          <p>A brand of British Gas's scale needed a process that could match it. Individual design decisions don't work when you have squads shipping across dozens of pages simultaneously. The system had to become the design — something everyone could use, not just the people who built it.</p>
         </div>
       </div>
     </div>
 
     <hr />
 
-    <!-- 4. RESPONSIVE REDESIGN -->
+    <!-- 4. THE DIGITAL STYLE GUIDE -->
     <div class="section reveal">
-      <p class="section-label">Responsive Design</p>
-      <h2 class="section-heading">Built for <em>every screen</em></h2>
-      <p class="body-text">The redesign was fully responsive from day one, designed and tested across four breakpoints. This was new territory for British Gas. The organisation had previously designed for desktop and worked downward. We flipped that: designing for the full range, with each breakpoint getting deliberate attention rather than being an afterthought.</p>
+      <p class="section-label">The Digital Style Guide</p>
+      <h2 class="section-heading">The brand, <em>made buildable</em></h2>
+      <p class="body-text">
+        The style guide was British Gas's first formal translation of its brand identity into web-specific rules. It covered everything from screen sizes and responsive behaviour to typography, colour, icons, imagery and tone of voice — giving every discipline a shared reference they could work from with confidence.
+      </p>
+
+      <!-- Responsive -->
+      <p class="section-label" style="margin-top: 48px;">Screen Sizes · Responsive</p>
+      <p class="body-text">The site was designed to be fully responsive across four defined breakpoints, with optimal viewing and interaction at every size — a minimum of resizing and panning across a wide range of devices. This was a significant shift for an organisation that had historically designed for desktop first.</p>
 
       <div class="breakpoint-row reveal">
-        <div class="bp-block bp-xl">
-          <p class="bp-px">1280px</p>
-          <p class="bp-label">Large</p>
-        </div>
-        <div class="bp-block bp-md">
-          <p class="bp-px">960px</p>
-          <p class="bp-label">Medium</p>
+        <div class="bp-block bp-xs">
+          <p class="bp-px">320px</p>
+          <p class="bp-label">X-Small</p>
         </div>
         <div class="bp-block bp-sm">
           <p class="bp-px">768px</p>
           <p class="bp-label">Small</p>
         </div>
-        <div class="bp-block bp-xs">
-          <p class="bp-px">320px</p>
-          <p class="bp-label">X-Small</p>
+        <div class="bp-block bp-md">
+          <p class="bp-px">960px</p>
+          <p class="bp-label">Medium</p>
+        </div>
+        <div class="bp-block bp-xl">
+          <p class="bp-px">1280px</p>
+          <p class="bp-label">Large</p>
         </div>
       </div>
 
-      <p class="body-text">The goal was a consistent experience across all devices, with a minimum of resizing and panning. Navigation, layouts, imagery and interactions were all considered at each size, not retrofitted after the fact.</p>
+      <!-- Style elements -->
+      <p class="section-label" style="margin-top: 48px;">Styles</p>
+      <div class="style-grid reveal">
+        <div class="style-card">
+          <p class="style-card-icon">〜</p>
+          <p class="style-card-name">Supergraphics</p>
+          <p class="style-card-desc">Two supergraphic treatments defined for digital use: the Flame Supergraphic — the bold, sweeping brand mark — and the Keyline Supergraphic, a lighter outline variant for more subtle applications.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-card-icon">Aa</p>
+          <p class="style-card-name">BG Flame · Web Font</p>
+          <p class="style-card-desc">The BG Flame typeface — licensed exclusively to the British Gas brand — was adapted for web use across a defined scale of nine text styles from H1 (70px Light) down to caveat text (12px Regular).</p>
+        </div>
+        <div class="style-card">
+          <p class="style-card-icon">◉</p>
+          <p class="style-card-name">Imagery</p>
+          <p class="style-card-desc">Two categories of photography defined: Residential Photography showing real people in home environments, and Product Photography for showcasing hardware and devices — each with specific usage guidance.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-card-icon">⊞</p>
+          <p class="style-card-name">Icons</p>
+          <p class="style-card-desc">A custom icon library built to British Gas brand standards — covering energy, home services, communication, billing and smart home use cases, consistently styled and sized for digital use.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-card-icon">●</p>
+          <p class="style-card-name">Colours & Accessibility</p>
+          <p class="style-card-desc">A three-tier colour system: Primary (BG Blue, White, Dark Slate), Secondary (a range of supporting tones), and Tertiary colours — all defined with accessibility contrast ratios built in from the start.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-card-icon">✎</p>
+          <p class="style-card-name">TOV · Writing for the web</p>
+          <p class="style-card-desc">A dedicated tone of voice section translating the brand's verbal identity into web writing principles — covering language style, sentence structure, and how to communicate clearly without jargon.</p>
+        </div>
+      </div>
 
-      <p class="section-label" style="margin-top: 48px;">Typography System</p>
-      <div class="img-full reveal" style="margin-top: 16px;">
-        <img src="assets/british-gas/comp-typography.png" alt="British Gas typography scale — H1 to body text" />
-        <p class="img-caption">Style guide · Typography scale · 9 defined text styles</p>
+    </div>
+
+    <hr />
+
+    <!-- 5. TONE OF VOICE -->
+    <div class="section reveal">
+      <p class="section-label">Tone of Voice</p>
+      <h2 class="section-heading">Writing rules that <em>felt like the brand</em></h2>
+      <p class="body-text">
+        The style guide included a full writing-for-the-web section — because getting the visual language right wasn't enough if the words didn't match. The TOV principles gave content authors, product managers and developers a shared framework for how British Gas should communicate online.
+      </p>
+
+      <div class="tov-grid reveal">
+        <div class="tov-card">
+          <p class="tov-card-label">Principle 01</p>
+          <p class="tov-card-title">Simple</p>
+          <p class="tov-card-body">Customers don't want to be bombarded with technical jargon or complicated language. Short sentences in everyday language. Warm without being patronising. Don't bamboozle — make the complex straightforward.</p>
+        </div>
+        <div class="tov-card">
+          <p class="tov-card-label">Principle 02</p>
+          <p class="tov-card-title">Friendly</p>
+          <p class="tov-card-body">Conversational in tone, never flippant or over-familiar. Using humour only when it's appropriate — looking for a knowing smile, not a laugh out loud. Building trust and confidence in the brand with every interaction.</p>
+        </div>
+        <div class="tov-card">
+          <p class="tov-card-label">Principle 03</p>
+          <p class="tov-card-title">Helpful</p>
+          <p class="tov-card-body">Don't waste customers' time by repeating ourselves or telling them things they don't need to know. Offer expert advice in a straightforward and honest way. Keep things to the point, without being blunt.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p>"We offer a consistent experience across our website so it always feels like us."</p>
       </div>
     </div>
 
     <hr />
 
-    <!-- 5. THE PATTERN LIBRARY -->
+    <!-- 6. THE PATTERN LIBRARY -->
     <div class="section reveal">
       <p class="section-label">Pattern Library</p>
       <h2 class="section-heading">The first <em>shared design language</em></h2>
-      <p class="body-text">The pattern library was the centrepiece of this project. Not just a visual document, but a working system that teams across British Gas could use to build consistently, without having to reinvent anything. Every component was tested with real users. Every decision was made with scalability in mind.</p>
+      <p class="body-text">The pattern library was the centrepiece of this project. Not just a visual document, but a working system that teams across British Gas could use to build consistently, without having to reinvent anything. Every component was tested with real users before it was added. Every decision was made with scalability in mind. The audience wasn't just designers — it was built for UX designers, UI developers, product owners, CMS managers, test analysts, BAs, SAs and the brand team.</p>
+
+      <div class="live-library-banner reveal">
+        <div class="live-library-banner-left">
+          <span class="live-dot"></span>
+          <div>
+            <p class="live-library-label">Still live today — years after launch</p>
+            <p class="live-library-title">British Gas Web Transformation — Components Library</p>
+          </div>
+        </div>
+        <a href="https://connectedhomes.github.io/BG-VI/" target="_blank" rel="noopener" class="live-library-link">View live library →</a>
+      </div>
 
       <div class="img-two reveal" style="margin-bottom: 0;">
         <figure style="aspect-ratio: auto; cursor: zoom-in;">
@@ -316,48 +408,48 @@
       </div>
 
       <div class="callout" style="margin-top: 40px;">
-        <p>"Content panels as building blocks, used as components to create any page within the CMS. Design once, use everywhere."</p>
+        <p>"Content panels used as components — building blocks to create any page within the CMS. Design once, use everywhere."</p>
       </div>
 
       <div class="component-grid reveal">
         <div class="component-card">
           <p class="component-tag">Navigation</p>
           <p class="component-name">Header, Mega Menu &amp; Footer</p>
-          <p class="component-desc">Global elements redesigned as a cohesive system. The mega menu introduced a new navigation architecture to handle British Gas's broad product range without overwhelming users.</p>
+          <p class="component-desc">Global elements redesigned as a cohesive system. The mega menu introduced a new navigation architecture to handle British Gas's broad product range, with a footer redesigned to match.</p>
         </div>
         <div class="component-card">
           <p class="component-tag">Actions</p>
           <p class="component-name">Buttons &amp; Links</p>
-          <p class="component-desc">A defined hierarchy of primary, secondary and tertiary interactions. Social login patterns (Facebook, Twitter, Google) standardised across the platform.</p>
+          <p class="component-desc">A defined hierarchy: Primary, Secondary, Inactive and Tertiary interactions, plus social login patterns (Facebook, Twitter, Google) — all standardised across the platform for the first time.</p>
         </div>
         <div class="component-card">
           <p class="component-tag">Data Collection</p>
           <p class="component-name">Forms</p>
-          <p class="component-desc">Many disparate form types consolidated into a simplified, unified ruleset. Forms made dynamic using Single Page Application patterns, dramatically reducing friction.</p>
+          <p class="component-desc">Many disparate form types consolidated into a simplified, unified ruleset. Forms made dynamic using Single Page Application (SPA) patterns — all necessary code loaded in a single page load, dramatically reducing friction.</p>
         </div>
         <div class="component-card">
           <p class="component-tag">Interaction</p>
-          <p class="component-name">Accordions &amp; Overlays</p>
-          <p class="component-desc">Patterns for progressive disclosure and layered content. Tested with users to validate when to expand in-context versus present in an overlay.</p>
+          <p class="component-name">Accordions, Calendars &amp; Overlays</p>
+          <p class="component-desc">Sets of patterns developed and continuously optimised through user testing. Accordions, date pickers, error states, overlays and caveats — all validated before being added to the library.</p>
         </div>
         <div class="component-card">
           <p class="component-tag">Content</p>
-          <p class="component-name">Jumbotron Panels</p>
-          <p class="component-desc">Three jumbotron levels for Home, Hub and Spoke pages. Two levels only, to minimise information architecture complexity and keep CMS authoring manageable.</p>
+          <p class="component-name">Jumbotron &amp; Content Panels</p>
+          <p class="component-desc">Only two Jumbotron levels — a deliberate decision to minimise and consolidate information architecture complexity. Content panels as modular building blocks, enabling any page to be authored consistently within the CMS.</p>
         </div>
         <div class="component-card">
           <p class="component-tag">Feedback</p>
-          <p class="component-name">Error &amp; Validation</p>
-          <p class="component-desc">Consistent error messages, calendar patterns and caveat treatments across the entire site. Removing the patchwork of one-off implementations that preceded them.</p>
+          <p class="component-name">Error, Validation &amp; Caveats</p>
+          <p class="component-desc">Consistent error messages, validation states and caveat treatments across the entire site — replacing the patchwork of one-off implementations that preceded them, and tested with users throughout.</p>
         </div>
       </div>
 
       <p class="section-label" style="margin-top: 48px;">Components in context</p>
-      <p class="body-text">Every component was designed with its full range of states documented. The accordion shows progressive disclosure in practice. The live chat overlay demonstrates how a single component required four distinct states — each with its own defined behaviour, copy and layout.</p>
+      <p class="body-text">Every component was documented with its full range of states. The accordion shows progressive disclosure in practice. The live chat overlay required four distinct states — each with its own defined behaviour, copy and layout — demonstrating the rigour applied to even a single component.</p>
 
       <div class="img-full reveal" style="margin-top: 16px; margin-bottom: 24px;">
         <img src="assets/british-gas/comp-accordion.png" alt="Accordion component — open and collapsed states" />
-        <p class="img-caption">Accordion · progressive disclosure pattern · open &amp; collapsed states</p>
+        <p class="img-caption">Accordion · progressive disclosure pattern · open &amp; collapsed states · tested with users</p>
       </div>
 
       <div class="img-two reveal">
@@ -380,19 +472,19 @@
       </div>
 
       <ul class="findings" style="margin-top: 40px;">
-        <li><strong>Tested with real users throughout.</strong> Each pattern was validated before being added to the library, not after. The system only included what had been proven to work.</li>
-        <li><strong>Audience beyond designers.</strong> The guide was built for UX designers, UI developers, product owners, CMS managers, test analysts, BAs, SAs and the brand team — everyone who touched the product.</li>
-        <li><strong>A living system from day one.</strong> The library was designed to evolve. New patterns would be added after testing and optimisation, with an online live version planned as the next step.</li>
+        <li><strong>Tested with real users throughout.</strong> Each pattern was validated before being added to the library, not after. The system only included what had been proven to work in the real world.</li>
+        <li><strong>Built for an audience beyond designers.</strong> The guide was created for UX designers, UI developers, product owners, CMS managers, test analysts, BAs, SAs and the brand team — everyone who touched the product, not just the people who designed it.</li>
+        <li><strong>Designed as a v1.0, not a finished product.</strong> The library was explicitly built to grow. New patterns would be added after continuous testing and optimisation. An online live version was the stated next step — and it happened.</li>
       </ul>
     </div>
 
     <hr />
 
-    <!-- 6. NEW WAY OF WORKING -->
+    <!-- 7. NEW WAY OF WORKING -->
     <div class="section reveal">
       <p class="section-label">Ways of Working</p>
       <h2 class="section-heading">Introducing <em>agile to the organisation</em></h2>
-      <p class="body-text">Working in agile squads was new at British Gas. The organisation had been used to more waterfall, handoff-driven delivery. Part of my contribution here wasn't just the design work itself, but helping to establish the processes and culture that made this way of working viable.</p>
+      <p class="body-text">Working in agile squads was new at British Gas. The organisation had been used to more waterfall, handoff-driven delivery. Part of my contribution here wasn't just the design work itself, but helping to establish the processes and culture that made this way of working viable for a large enterprise brand.</p>
 
       <div class="two-col-text">
         <div>
@@ -401,7 +493,7 @@
         </div>
         <div>
           <h3>New <em>processes</em></h3>
-          <p>I introduced ways of working that hadn't existed before: shared design reviews, pattern contribution processes, and a regular cadence for testing and adding to the library. These weren't just efficiency measures. They changed how the team thought about design ownership.</p>
+          <p>I introduced ways of working that hadn't existed before: shared design reviews, pattern contribution processes, and a regular cadence for testing and adding to the library. These weren't just efficiency measures — they changed how the team thought about design ownership.</p>
         </div>
       </div>
 
@@ -409,7 +501,7 @@
         <div class="principle">
           <p class="principle-num">01</p>
           <p class="principle-name">Design in the open</p>
-          <p class="principle-desc">Regular cross-team reviews meant decisions were visible early. Fewer surprises at handoff. Fewer rounds of late rework.</p>
+          <p class="principle-desc">Regular cross-team reviews meant decisions were visible early. Fewer surprises at handoff. Fewer rounds of late rework. Everyone knew what was coming.</p>
         </div>
         <div class="principle">
           <p class="principle-num">02</p>
@@ -419,51 +511,51 @@
         <div class="principle">
           <p class="principle-num">03</p>
           <p class="principle-name">Test before you ship</p>
-          <p class="principle-desc">Every pattern in the library was user-tested before becoming official. The system was trusted because it had been validated, not just designed.</p>
+          <p class="principle-desc">Every pattern in the library was user-tested before becoming official. The system was trusted because it had been validated, not just designed. That trust made adoption faster.</p>
         </div>
         <div class="principle">
           <p class="principle-num">04</p>
           <p class="principle-name">Built to be extended</p>
-          <p class="principle-desc">The pattern library was a v1.0, explicitly. The goal was a foundation that would keep growing, with a live online version planned as the natural evolution.</p>
+          <p class="principle-desc">The pattern library was v1.0 by design. The goal was a foundation that would keep growing — with a live online version planned as the natural evolution. That version now exists.</p>
         </div>
       </div>
     </div>
 
     <hr />
 
-    <!-- 7. IMPACT -->
+    <!-- 8. IMPACT -->
     <div class="section reveal">
       <p class="section-label">Impact</p>
       <h2 class="section-heading">What it <em>changed</em></h2>
-      <p class="body-text">The work had two types of impact. The immediate: a redesigned, responsive website that actually worked across devices, with a coherent design language for the first time. And the lasting: a shared system that fundamentally changed how the team designed and shipped.</p>
+      <p class="body-text">The work had two types of impact. The immediate: a redesigned, fully responsive website with a coherent digital identity for the first time — the brand VI finally expressed online. And the lasting: a shared system that fundamentally changed how the team designed and shipped, and a pattern library that is still live and in use today.</p>
     </div>
 
     <div class="outcomes-bento reveal">
       <div class="o-card">
         <p class="o-card-num">01</p>
         <h3 class="o-card-title">First responsive website <em>for British Gas</em></h3>
-        <p class="o-card-body">britishgas.co.uk became fully responsive across four breakpoints, reaching millions of customers on mobile for the first time with an experience actually designed for the device they were on.</p>
+        <p class="o-card-body">britishgas.co.uk became fully responsive across four breakpoints, reaching millions of customers on mobile for the first time with an experience actually designed for the device they were on — not retrofitted after the fact.</p>
       </div>
       <div class="o-card">
         <p class="o-card-num">02</p>
-        <h3 class="o-card-title">Design consistency <em>at scale</em></h3>
-        <p class="o-card-body">The pattern library eliminated the patchwork of one-off solutions. Squads across the organisation could now build to a shared standard, without needing to reinvent or re-debate every component.</p>
+        <h3 class="o-card-title">Brand VI <em>expressed digitally</em></h3>
+        <p class="o-card-body">The new British Gas visual identity — BG Flame typeface, supergraphics, colour system, imagery and tone of voice — was given a formal digital home for the first time. One consistent expression, across every page.</p>
       </div>
       <div class="o-card">
         <p class="o-card-num">03</p>
-        <h3 class="o-card-title">Efficiency across <em>design and development</em></h3>
-        <p class="o-card-body">Reusable, tested components reduced duplication across teams. Less time spent rebuilding the same things, more time spent solving real customer problems. A measurable shift in how the team spent its effort.</p>
+        <h3 class="o-card-title">Design consistency <em>at scale</em></h3>
+        <p class="o-card-body">The pattern library eliminated the patchwork of one-off solutions. Squads could now build to a shared standard, with validated components, without needing to reinvent or re-debate decisions that had already been made.</p>
       </div>
       <div class="o-card">
         <p class="o-card-num">04</p>
-        <h3 class="o-card-title">A foundation <em>for what came next</em></h3>
-        <p class="o-card-body">The system was designed to grow. The work established a culture of shared ownership around design decisions that outlasted the project itself, and the library continued to evolve long after v1.0 shipped.</p>
+        <h3 class="o-card-title">A system that <em>outlasted the project</em></h3>
+        <p class="o-card-body">The library was designed as a foundation, not a deliverable. It continued to grow after v1.0 shipped, evolved into a live online resource — and remains accessible today, years after the project completed.</p>
       </div>
     </div>
 
     <hr />
 
-    <!-- 8. REFLECTION -->
+    <!-- 9. REFLECTION -->
     <div class="section reveal">
       <p class="section-label">Reflection</p>
       <h2 class="section-heading">What I took <em>away</em></h2>
@@ -472,18 +564,18 @@
         <div class="well-col">
           <h3>What went <em>well</em></h3>
           <ul class="went-well">
-            <li>Framing the pattern library as a shared tool, not just a designer artefact, meant buy-in came from every discipline, not just design</li>
-            <li>Testing each pattern before adding it to the library built trust in the system. People used it because they knew it worked</li>
-            <li>Introducing agile squad working created real momentum. Cross-functional collaboration shortened the feedback loops that had previously slowed delivery</li>
-            <li>The style guide translating offline brand identity into digital rules gave everyone a shared reference and removed a lot of recurring debate</li>
+            <li>Framing the pattern library as a shared tool — not just a designer artefact — meant buy-in came from every discipline. It got used because people felt ownership over it.</li>
+            <li>Testing each pattern before adding it to the library built genuine trust in the system. People used it because they knew it worked, not just because they were told to.</li>
+            <li>Presenting the style guide and pattern library to the wider organisation created clarity and alignment that individual team conversations couldn't achieve. Getting the whole business in the room mattered.</li>
+            <li>Translating TOV into web writing principles meant the brand felt consistent end-to-end — not just visually, but in how it communicated.</li>
           </ul>
         </div>
         <div class="well-col">
           <h3>What I'd <em>do differently</em></h3>
           <ul class="didnt-well">
-            <li>The live online version of the pattern library was planned but not yet shipped at v1.0. Getting that in earlier would have accelerated adoption across squads considerably</li>
-            <li>Some patterns were added to the library before enough squads had tried to use them in context. Real-world friction only became apparent later, requiring revision</li>
-            <li>Onboarding new team members to the system took longer than it should have. Better documentation from the start would have reduced that ramp-up time</li>
+            <li>The live online version of the pattern library was planned from the start but shipped later than it could have. Getting it in earlier would have accelerated adoption considerably — the link between documentation and usage is direct.</li>
+            <li>Some patterns were added to the library before enough squads had tried to use them in context. Real-world friction only became apparent after, requiring revision that could have been caught sooner.</li>
+            <li>Onboarding new team members to the system took longer than it should have. Better documentation from the start — especially for the CMS authoring side — would have reduced that ramp-up time.</li>
           </ul>
         </div>
       </div>
@@ -506,7 +598,6 @@
   </div>
 
   <script>
-    // Scroll reveals
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -518,7 +609,6 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     reveals.forEach(el => observer.observe(el));
 
-    // Modal lightbox
     const modal = document.getElementById('imgModal');
     const modalImg = document.getElementById('modalImg');
     const modalClose = document.getElementById('modalClose');
