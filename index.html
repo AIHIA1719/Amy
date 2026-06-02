@@ -6,7 +6,7 @@
   <title>Amy Hirrell Lead Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -73,7 +73,7 @@
 
     /* ── HERO ── */
     .hero {
-      min-height: 100vh;
+      min-height: 72vh;
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 48px 64px;
       position: relative; overflow: hidden;
@@ -86,7 +86,24 @@
       object-fit: cover; object-position: center top;
       opacity: 0.18;
     }
-    .hero-top, .hero-headline, .hero-bottom { position: relative; z-index: 1; }
+    /* pink glow from top */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse 90% 55% at 50% -5%, rgba(255,180,200,0.45) 0%, transparent 65%);
+    }
+    /* fine grid fading out downward */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 72px 72px;
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
+      mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
+    }
+    .hero-top, .hero-headline, .hero-bottom { position: relative; z-index: 2; }
     .hero-top {
       display: flex; justify-content: space-between; align-items: flex-start;
       margin-bottom: 48px;
@@ -102,14 +119,15 @@
     }
     .hero-headline {
       font-family: 'Fraunces', serif;
-      font-size: clamp(64px, 9.5vw, 148px);
-      font-weight: 200; line-height: 0.92;
+      font-size: clamp(80px, 17vw, 260px);
+      font-weight: 900; line-height: 0.85;
       letter-spacing: -0.03em;
+      text-transform: uppercase;
       margin-bottom: 0;
       opacity: 0; animation: fadeUp 1s 0.4s forwards;
     }
-    .hero-headline .line2 { padding-left: 18vw; }
-    .hero-headline em { font-style: italic; }
+    .hero-headline .line1, .hero-headline .line2 { display: block; }
+    .hero-headline em { font-style: normal; }
 
     .hero-bottom {
       display: flex; justify-content: space-between; align-items: flex-end;
@@ -371,7 +389,7 @@
       nav { padding: 0 24px; }
       .nav-links { display: none; }
       .hero { padding: 120px 24px 56px; min-height: unset; justify-content: flex-start; }
-      .hero-headline .line2 { padding-left: 0; }
+
       .work, .about, .process, .contact, footer { padding-left: 24px; padding-right: 24px; }
       .case-item { grid-template-columns: 1fr; }
       .case-preview { display: none; }
@@ -405,8 +423,8 @@
       <span class="hero-location">London, UK · 20+ years experience</span>
     </div>
     <h1 class="hero-headline">
-      <span class="line1">Amy</span><br>
-      <span class="line2"><em>Hirrell</em></span>
+      <span class="line1">Amy</span>
+      <span class="line2">Hirrell</span>
     </h1>
     <div class="hero-bottom">
       <p class="hero-desc">
@@ -604,7 +622,8 @@
       <h2 class="contact-heading">Let's build<br>something <em>together</em></h2>
       <p class="contact-sub">I'm open to senior product design roles, consulting engagements, and design leadership opportunities.</p>
       <div class="contact-actions">
-        <a href="mailto:amy@amyhirrell.com" class="btn-light">Say hello →</a>
+        <a href="mailto:amyhirrell@googlemail.com" class="btn-light">Email me →</a>
+        <a href="tel:+447427135892" class="btn-outline-light">07427 135892</a>
         <a href="https://www.linkedin.com/in/amy-hirrell" target="_blank" class="btn-outline-light">LinkedIn →</a>
       </div>
     </div>
