@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +77,17 @@
       min-height: 100vh;
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 48px 64px;
+      position: relative; overflow: hidden;
     }
+    .hero-bg {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    }
+    .hero-bg img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      opacity: 0.18;
+    }
+    .hero-top, .hero-headline, .hero-bottom { position: relative; z-index: 1; }
     .hero-top {
       display: flex; justify-content: space-between; align-items: flex-start;
       margin-bottom: 48px;
@@ -200,7 +211,6 @@
     .cs2 { background: linear-gradient(135deg, #F0EBE3 0%, #E0D9CE 100%); }
     .cs3 { background: linear-gradient(135deg, #0D1F2D 0%, #1A3545 100%); }
     .cs3 .preview-label { color: rgba(255,255,255,0.2); }
-    .cs4 { background: linear-gradient(135deg, #F5F0E8 0%, #EAE3D6 100%); }
 
     .case-arrow {
       display: inline-flex; align-items: center; gap: 8px;
@@ -391,6 +401,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-bg"><img src="assets/british-gas/bg-hero.jpg" alt="" /></div>
     <div class="hero-top">
       <span class="hero-role">Lead UI &amp; Product Designer</span>
       <span class="hero-location">London, UK · 20+ years experience</span>
@@ -440,7 +451,7 @@
   <section class="work" id="work">
     <div class="work-header reveal">
       <h2 class="work-title">Selected<br><em>Case Studies</em></h2>
-      <span class="work-count">04 projects</span>
+      <span class="work-count">03 projects</span>
     </div>
 
     <div class="case-list">
@@ -500,6 +511,8 @@
           </div>
         </div>
       </a>
+    </div>
+  </section>
 
   <!-- ABOUT -->
   <section class="about" id="about">
