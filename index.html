@@ -402,8 +402,9 @@
       .hero-blurb { max-width: 100%; }
 
       .work, .about, .process, .contact, footer { padding-left: 24px; padding-right: 24px; }
-      .case-item { grid-template-columns: 1fr; }
-      .case-preview { display: none; }
+      .case-item { grid-template-columns: 1fr; gap: 0; padding: 0 0 28px; }
+      .case-preview { display: block; width: 100%; aspect-ratio: 16/9; margin-bottom: 16px; order: -1; }
+      .case-num { display: none; }
       .about-grid { grid-template-columns: 1fr; }
       .process-steps { grid-template-columns: 1fr 1fr; }
       .process-step:nth-child(2n) { border-right: none; }
