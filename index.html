@@ -402,9 +402,11 @@
       .hero-blurb { max-width: 100%; font-size: 14px; }
 
       .work, .about, .process, .contact, footer { padding-left: 24px; padding-right: 24px; }
-      .case-item { grid-template-columns: 1fr; gap: 0; padding: 0 0 28px; }
-      .case-preview { display: block; width: 100%; aspect-ratio: 16/9; margin-bottom: 16px; order: -1; }
-      .case-num { display: none; }
+      .case-item { grid-template-columns: 1fr; gap: 0; padding: 24px 0 32px; border-top: 1px solid var(--border); }
+      .case-item:last-child { border-bottom: 1px solid var(--border); }
+      .case-item:hover { margin: 0; padding: 24px 0 32px; }
+      .case-preview { display: block; width: 100%; aspect-ratio: 16/9; margin-bottom: 14px; order: -1; }
+      .case-num { display: block; font-size: 11px; letter-spacing: 0.2em; margin-bottom: 8px; }
       .about-grid { grid-template-columns: 1fr; }
       .process-steps { grid-template-columns: 1fr 1fr; }
       .process-step:nth-child(2n) { border-right: none; }
