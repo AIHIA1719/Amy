@@ -6,7 +6,7 @@
   <title>Amy Hirrell Lead Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -74,70 +74,76 @@
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: space-between;
-      padding: 32px 48px 64px;
+      background: #FFFFFF;
+      display: flex; align-items: center; justify-content: center;
+      padding: 100px 48px 64px;
       position: relative; overflow: hidden;
     }
-    .hero-bg {
-      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    .hero-bg { display: none; }
+    .hero::before, .hero::after { display: none; }
+
+    .hero-inner {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 24px; max-width: 820px; width: 100%; align-items: flex-start;
+      opacity: 0; animation: fadeUp 1s 0.2s forwards;
     }
-    .hero-bg img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-      opacity: 0.18;
+
+    .hero-text { flex: 0 0 auto; }
+
+    .hero-greeting {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: #888; margin-bottom: 4px;
     }
-    /* pink glow from top */
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background: radial-gradient(ellipse 90% 55% at 50% -5%, rgba(255,180,200,0.45) 0%, transparent 65%);
-    }
-    /* fine grid fading out downward */
-    .hero::after {
-      content: '';
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background-image:
-        linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
-      background-size: 72px 72px;
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
-    }
-    .hero-top, .hero-headline, .hero-bottom { position: relative; z-index: 2; }
-    .hero-top {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      opacity: 0; animation: fadeUp 0.9s 0.2s forwards;
-    }
-    .hero-role {
-      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .hero-location {
-      font-size: 12px; letter-spacing: 0.1em;
-      color: var(--muted);
-    }
+
     .hero-headline {
       font-family: 'Fraunces', serif;
-      font-size: clamp(56px, 10.5vw, 152px);
-      font-weight: 900; line-height: 0.88;
-      letter-spacing: -0.03em;
-      text-transform: uppercase;
-      margin-bottom: 0;
+      font-size: clamp(80px, 13vw, 180px);
+      font-weight: 700; line-height: 0.88;
+      letter-spacing: -0.02em;
+      color: #111;
+      margin: 0;
+    }
+    .hero-headline em { font-style: italic; }
+
+    .hero-role-label {
+      display: inline-block;
+      margin-top: 18px;
+      background: #FCCFB0;
+      padding: 4px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: #222;
+    }
+
+    .hero-blurb {
+      margin-top: 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; line-height: 1.75;
+      color: #555; max-width: 360px;
+    }
+
+    .hero-portrait-wrap {
+      width: clamp(140px, 16vw, 220px);
+      height: clamp(140px, 16vw, 220px);
+      border-radius: 50%;
+      border: 2px solid #111;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-top: 30px;
       opacity: 0; animation: fadeUp 1s 0.4s forwards;
     }
-    .hero-headline .line1, .hero-headline .line2 { display: block; }
-    .hero-headline em { font-style: normal; }
+    .hero-portrait {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-    .hero-bottom {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-top: 48px;
-      opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
-    }
-    .hero-desc {
-      max-width: 400px; font-size: 15px;
-      color: var(--muted); line-height: 1.8;
-      margin-top: 20px; position: relative; z-index: 2;
-    }
+    .hero-top { display: none; }
+    .hero-bottom { display: none; }
+    .hero-desc { display: none; }
+    .hero-name-group { display: contents; }
     .hero-scroll-cta {
       display: flex; align-items: center; gap: 12px;
       font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -418,24 +424,16 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-top">
-      <span class="hero-role">Lead UI &amp; Product Designer</span>
-      <span class="hero-location">London, UK · 20+ years experience</span>
-    </div>
-    <h1 class="hero-headline">
-      <span class="line1">Amy</span>
-      <span class="line2">Hirrell</span>
-    </h1>
-    <p class="hero-desc">
-      Patent holder for the UI design of Sky Glass, now syndicated across 3 continents. IS Award winner for British Gas's first responsive Digital Style Guide and Pattern Library. I design with empathy and deliver with impact.
-    </p>
-    <div class="hero-bottom">
-      <a href="#work" class="hero-scroll-cta">
-        Selected work
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M8 2v12M2 8l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <span class="hero-greeting">Hi, I am</span>
+        <h1 class="hero-headline">Amy</h1>
+        <span class="hero-role-label">Lead Product Designer</span>
+        <p class="hero-blurb">20+ years designing products people genuinely love. One of the patent holders on Sky Glass, now globally syndicated. IS Award winner for British Gas's first design system. I design with empathy and deliver with impact.</p>
+      </div>
+      <div class="hero-portrait-wrap">
+        <img class="hero-portrait" src="assets/amy-circle.png" alt="Amy Hirrell" />
+      </div>
     </div>
   </section>
 
