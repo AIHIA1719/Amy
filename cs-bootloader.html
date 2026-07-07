@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal Bootloader · Amy Hirrell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F4F0; --ink: #0D0D0B; --muted: #6B685F;
+      --border: #DDDAD4; --accent: #FF4500; --white: #FFFFFF;
+      --card-bg: #ECEAE4; --dark: #0A0A0A;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0 48px; height: 64px; background: rgba(10,10,10,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 300; text-decoration: none; color: #fff; letter-spacing: -0.01em; }
+    .nav-back { display: flex; align-items: center; gap: 8px; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.8); transition: color 0.2s, gap 0.25s; }
+    .nav-back:hover { color: #fff; gap: 14px; }
+
+    .cs-hero { padding-top: 64px; min-height: 88vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 72px; padding-left: 48px; padding-right: 48px; background: #080808; }
+    .hero-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(255,60,0,0.12) 0%, transparent 70%); pointer-events: none; }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 80px 80px; -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 60%); mask-image: linear-gradient(to bottom, black 0%, transparent 60%); }
+
+    /* Bootloader animation */
+    .boot-anim { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); z-index: 0; display: flex; flex-direction: column; align-items: center; gap: 40px; opacity: 0.18; }
+
+    /* Outer ring */
+    .boot-ring { width: 180px; height: 180px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; position: relative; animation: boot-ring-pulse 4s ease-in-out infinite; }
+    @keyframes boot-ring-pulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
+
+    /* Inner ring */
+    .boot-ring::before { content: ''; position: absolute; width: 140px; height: 140px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); }
+
+    /* RGB dots inside ring */
+    .boot-dots { display: flex; gap: 14px; align-items: center; }
+    .boot-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .boot-dot.r { background: #FF3C3C; animation: dot-pulse 3s ease-in-out infinite 0s; }
+    .boot-dot.g { background: #3CFF8A; animation: dot-pulse 3s ease-in-out infinite 0.5s; }
+    .boot-dot.b { background: #3C8AFF; animation: dot-pulse 3s ease-in-out infinite 1s; }
+    @keyframes dot-pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+
+    /* Progress bar */
+    .boot-progress { width: 200px; height: 1px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+    .boot-progress::after { content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent); animation: boot-scan 3s ease-in-out infinite; }
+    @keyframes boot-scan { 0% { left: -100%; } 100% { left: 100%; } }
+
+    /* Ellipsis word */
+    .boot-ellipsis { font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.3); animation: boot-fade 3s ease-in-out infinite; }
+    @keyframes boot-fade { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+    .cs-hero-content { position: relative; z-index: 1; }
+    .cs-eyebrow { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+    .cs-title { font-family: 'Fraunces', serif; font-size: clamp(56px, 9vw, 120px); font-weight: 200; line-height: 0.92; letter-spacing: -0.03em; color: #fff; margin-bottom: 16px; }
+    .cs-subtitle { font-family: 'Fraunces', serif; font-size: clamp(18px, 2.5vw, 32px); font-weight: 200; font-style: italic; color: rgba(255,255,255,0.65); margin-bottom: 48px; }
+    .cs-meta-row { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta-label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+    .cs-meta-value { font-size: 15px; color: rgba(255,255,255,0.8); }
+
+    .cs-body { max-width: 1080px; margin: 0 auto; padding: 96px 48px 120px; }
+    .section { margin-bottom: 88px; }
+    .section-label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .section-heading { font-family: 'Fraunces', serif; font-size: clamp(28px, 3vw, 44px); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 28px; }
+    .section-heading em { font-style: italic; }
+    .body-text { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; max-width: 680px; }
+    .body-text strong { color: var(--ink); font-weight: 500; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 72px 0; }
+
+    .callout { background: var(--card-bg); border-left: 3px solid var(--accent); padding: 28px 32px; margin: 32px 0; max-width: 720px; }
+    .callout p { font-size: 19px; font-family: 'Fraunces', serif; font-weight: 300; font-style: italic; line-height: 1.6; color: var(--ink); }
+
+    .findings { list-style: none; margin: 24px 0; max-width: 680px; }
+    .findings li { padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 16px; color: var(--muted); line-height: 1.7; display: flex; gap: 16px; align-items: baseline; }
+    .findings li::before { content: '-'; color: var(--accent); flex-shrink: 0; }
+    .findings li:first-child { border-top: 1px solid var(--border); }
+    .findings li strong { color: var(--ink); font-weight: 500; }
+
+    .role-card { background: var(--ink); padding: 40px; margin: 32px 0; max-width: 720px; }
+    .role-card h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300; color: #fff; margin-bottom: 20px; }
+    .role-card ul { list-style: none; }
+    .role-card ul li { font-size: 16px; color: rgba(245,244,240,0.87); line-height: 1.8; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; gap: 12px; }
+    .role-card ul li::before { content: '↳'; color: var(--accent); flex-shrink: 0; }
+    .role-card ul li:last-child { border-bottom: none; }
+
+    .two-col-text { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 32px; }
+    .two-col-text h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; margin-bottom: 14px; }
+    .two-col-text h3 em { font-style: italic; }
+    .two-col-text p { font-size: 16px; color: var(--muted); line-height: 1.8; }
+
+    /* Constraint cards */
+    .constraint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .constraint-card { background: var(--bg); padding: 28px 24px; }
+    .constraint-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 200; font-style: italic; color: var(--border); margin-bottom: 10px; }
+    .constraint-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 300; margin-bottom: 8px; }
+    .constraint-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* Concept cards */
+    .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
+    .concept-card { background: var(--dark); padding: 32px 28px; }
+    .concept-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+    .concept-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; color: #fff; margin-bottom: 10px; }
+    .concept-desc { font-size: 14px; color: rgba(245,244,240,0.6); line-height: 1.7; }
+
+    /* Competitor timeline */
+    .competitor-row { display: flex; align-items: center; gap: 0; margin: 8px 0; border: 1px solid var(--border); }
+    .competitor-name { font-size: 13px; font-weight: 500; color: var(--ink); padding: 14px 20px; min-width: 110px; border-right: 1px solid var(--border); }
+    .competitor-bar { font-size: 12px; color: var(--muted); padding: 14px 16px; letter-spacing: 0.08em; }
+
+    /* PDF opener */
+    .pdf-opener { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--dark); padding: 36px 40px; margin: 48px 0 0; flex-wrap: wrap; border-left: 3px solid var(--accent); text-decoration: none; }
+    .pdf-opener-left { display: flex; align-items: center; gap: 20px; }
+    .pdf-opener-icon { width: 44px; height: 44px; flex-shrink: 0; opacity: 0.6; }
+    .pdf-opener-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 5px; }
+    .pdf-opener-title { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 300; color: #fff; line-height: 1.3; }
+    .pdf-opener-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border: 1px solid rgba(255,69,0,0.4); color: #FF6B35; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; transition: border-color 0.2s, gap 0.25s; }
+    .pdf-opener-link:hover { border-color: #FF6B35; gap: 16px; }
+
+    .outcomes-bento { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: calc(100% + 96px); margin-left: -48px; margin-top: 40px; }
+    .o-card { background: var(--dark); padding: 52px 48px; }
+    .o-card-num { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 200; font-style: italic; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 20px; }
+    .o-card-title { font-family: 'Fraunces', serif; font-size: clamp(20px, 2vw, 28px); font-weight: 300; color: #fff; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .o-card-title em { font-style: italic; color: rgba(255,255,255,0.45); }
+    .o-card-body { font-size: 16px; color: rgba(245,244,240,0.75); line-height: 1.85; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+
+    .cs-nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 48px; border-top: 1px solid var(--border); background: var(--white); }
+    .cs-nav a { display: flex; align-items: center; gap: 10px; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--muted); transition: color 0.2s, gap 0.25s; }
+    .cs-nav a:hover { color: var(--ink); gap: 16px; }
+
+    @keyframes reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: reveal 0.7s ease forwards; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .cs-hero { padding-left: 24px; padding-right: 24px; }
+      .cs-body { padding: 64px 24px 80px; }
+      .two-col-text { grid-template-columns: 1fr; gap: 32px; }
+      .constraint-grid { grid-template-columns: 1fr; }
+      .concept-grid { grid-template-columns: 1fr; }
+      .outcomes-bento { grid-template-columns: 1fr; width: 100%; margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">Amy Hirrell</a>
+    <a class="nav-back" href="index.html">← Back to work</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="cs-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-grid"></div>
+    <div class="boot-anim">
+      <div class="boot-ring">
+        <div class="boot-dots">
+          <span class="boot-dot r"></span>
+          <span class="boot-dot g"></span>
+          <span class="boot-dot b"></span>
+        </div>
+      </div>
+      <div class="boot-progress"></div>
+      <span class="boot-ellipsis">Initialising</span>
+    </div>
+    <div class="cs-hero-content">
+      <p class="cs-eyebrow">Case Study · 04 · Sky</p>
+      <h1 class="cs-title">Universal<br>Bootloader</h1>
+      <p class="cs-subtitle">A global, hardware-level UI built to outlast the product it ships on</p>
+      <div class="cs-meta-row">
+        <div><p class="cs-meta-label">Product Area</p><p class="cs-meta-value">Sky · EntOS · Hardware</p></div>
+        <div><p class="cs-meta-label">My Role</p><p class="cs-meta-value">Lead Product Designer</p></div>
+        <div><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">June 2024</p></div>
+        <div><p class="cs-meta-label">Scope</p><p class="cs-meta-value">Global · Multi-partner · Factory-level</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-body">
+
+    <!-- 1. CONTEXT -->
+    <div class="section reveal">
+      <p class="section-label">The Context</p>
+      <h2 class="section-heading">The moment before <em>everything begins</em></h2>
+      <p class="body-text">The bootloader is the first thing a customer ever sees on a Sky device. It runs before the operating system loads, before Sky Glass or EntOS exists from the user's perspective — a narrow window of hardware-level activity that is technically constrained, globally deployed, and permanently baked into the device at the factory.</p>
+      <p class="body-text">Until this project, Sky had a dedicated bootloader build tied to its own manufacturing line. It worked for the existing setup but was neither scalable nor future-proof. As Sky moved to expand its hardware partnerships globally — most critically with Rogers in North America — the brittleness of the existing approach became a critical risk.</p>
+
+      <div class="callout">
+        <p>"The bootloader is built into the hardware at factory level. Whatever we design has to work years from now, on devices we haven't seen yet, in markets we haven't entered."</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 2. THE BRIEF -->
+    <div class="section reveal">
+      <p class="section-label">The Brief</p>
+      <h2 class="section-heading">Three problems, <em>one solution</em></h2>
+      <p class="body-text">The brief was deceptively simple: design a universal bootloader. In practice, it meant solving three interconnected problems simultaneously — a brand problem, a scale problem and a technical problem — with a solution that had to work in conditions most design work never considers.</p>
+
+      <div class="constraint-grid reveal">
+        <div class="constraint-card">
+          <p class="constraint-num">01</p>
+          <p class="constraint-title">The brand problem</p>
+          <p class="constraint-desc">Sky's new EntOS identity posed a brand encroachment risk with third-party hardware partners. The bootloader could not be overtly tied to Sky's own brand — it needed to feel neutral, or at most, covertly connected for those who knew.</p>
+        </div>
+        <div class="constraint-card">
+          <p class="constraint-num">02</p>
+          <p class="constraint-title">The scale problem</p>
+          <p class="constraint-desc">The existing build created a dedicated Sky manufacturing line — one build per device variant, one language set per market. Rogers required English and French Canadian simultaneously. The new solution had to support multiple languages and partners from a single build.</p>
+        </div>
+        <div class="constraint-card">
+          <p class="constraint-num">03</p>
+          <p class="constraint-title">The technical problem</p>
+          <p class="constraint-desc">The bootloader runs under extreme hardware constraints — minimal processing power, no operating system, limited rendering capability. The design had to be simple enough to run on older devices, future-proof enough to ship unchanged for years, and visually coherent across all of them.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 3. MY ROLE -->
+    <div class="section reveal">
+      <p class="section-label">My Role</p>
+      <h2 class="section-heading">How I <em>contributed</em></h2>
+      <div class="role-card">
+        <h3>Lead Product Designer</h3>
+        <ul>
+          <li>Led the design exploration through a Crazy 8s workshop with cross-functional stakeholders</li>
+          <li>Audited competitor bootloader approaches across Apple TV, Apple iOS, Roku, Google TV and Fire TV to define best practice and identify opportunities</li>
+          <li>Developed multiple concept directions ranging from abstracted brand expressions to fully neutral global treatments</li>
+          <li>Balanced the competing constraints of brand neutrality, technical feasibility and global scalability in every design decision</li>
+          <li>Produced final UI assets and specifications for developer handover, with a completion timeline driven by the Rogers critical path</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 4. COMPETITOR RESEARCH -->
+    <div class="section reveal">
+      <p class="section-label">Research</p>
+      <h2 class="section-heading">What the <em>competition does</em></h2>
+      <p class="body-text">Before designing anything, I audited how the world's major streaming hardware platforms handle the bootloader moment. The patterns were revealing: the best-in-class solutions were minimal, brand-confident and fast. The worst created anxiety through silence or confusion through complexity.</p>
+
+      <div style="margin: 32px 0;">
+        <div class="competitor-row">
+          <span class="competitor-name">Apple TV</span>
+          <span class="competitor-bar">Static logo · Progress bar · Static logo · Setup — total ~35s</span>
+        </div>
+        <div class="competitor-row">
+          <span class="competitor-name">Apple iOS</span>
+          <span class="competitor-bar">Static logo · Middleware screen · Setup — total ~18s</span>
+        </div>
+        <div class="competitor-row">
+          <span class="competitor-name">Roku</span>
+          <span class="competitor-bar">Static logo · Animated logo loop · Setup — total ~25s</span>
+        </div>
+        <div class="competitor-row">
+          <span class="competitor-name">Google TV</span>
+          <span class="competitor-bar">Black · Static logo · Animated logo · Black — total ~43s</span>
+        </div>
+        <div class="competitor-row">
+          <span class="competitor-name">Fire TV</span>
+          <span class="competitor-bar">Black · Static logo · Status text · Logo · Animation — total ~3m+</span>
+        </div>
+      </div>
+
+      <p class="body-text">The insight: customers don't need entertainment during a bootloader. They need reassurance. A confident, minimal sequence that communicates "this is working" is more effective than an elaborate animation that risks feeling like something has gone wrong.</p>
+    </div>
+
+    <hr />
+
+    <!-- 5. CONCEPT DESIGN -->
+    <div class="section reveal">
+      <p class="section-label">Concept Design</p>
+      <h2 class="section-heading">Six directions, <em>one workshop</em></h2>
+      <p class="body-text">Working with a cross-functional team — Ross, Lorenzo, Hayden, Jack and myself — we ran a Crazy 8s workshop to rapidly generate concept directions before committing to a single approach. Six distinct ideas emerged, each addressing the constraints differently.</p>
+
+      <div class="concept-grid reveal">
+        <div class="concept-card">
+          <p class="concept-tag">Concept 01</p>
+          <p class="concept-name">EntOS Circle</p>
+          <p class="concept-desc">Leans on the existing EntOS identity but uses it in a way that is abstracted enough to feel neutral to end users, while remaining meaningful to those who know the brand.</p>
+        </div>
+        <div class="concept-card">
+          <p class="concept-tag">Concept 02</p>
+          <p class="concept-name">RGB Ellipsis</p>
+          <p class="concept-desc">Uses the three primary colours of the light spectrum — which also correspond to the three colours on the remote — to show how Sky forms everything the customer is about to see.</p>
+        </div>
+        <div class="concept-card">
+          <p class="concept-tag">Concept 03</p>
+          <p class="concept-name">Ellipsis</p>
+          <p class="concept-desc">The ellipsis appears throughout the Sky system to communicate "more". A playful, recognisable treatment that works at any hardware capability level without requiring complex rendering.</p>
+        </div>
+        <div class="concept-card">
+          <p class="concept-tag">Concept 04</p>
+          <p class="concept-name">Wake</p>
+          <p class="concept-desc">Adapts the existing Sky wake pattern using neutral colours. Since the bootloader runs before the OS wake animation, this would be non-repetitive and give a sense of continuity into the full experience.</p>
+        </div>
+        <div class="concept-card">
+          <p class="concept-tag">Concept 05</p>
+          <p class="concept-name">Edge</p>
+          <p class="concept-desc">Plays on Sky's Z-axis system transition language, animating in to give the customer a sense of depth and immersion from the very first moment of interaction with the device.</p>
+        </div>
+        <div class="concept-card">
+          <p class="concept-tag">Concept 06</p>
+          <p class="concept-name">Languages</p>
+          <p class="concept-desc">Embodies Sky's truly global ethos through the use of text in multiple world languages, directly addressing the multi-territory brief and communicating universality from the very first frame.</p>
+        </div>
+      </div>
+
+      <a class="pdf-opener reveal" href="assets/bootloader/bootloader.pdf" target="_blank" rel="noopener">
+        <div class="pdf-opener-left">
+          <svg class="pdf-opener-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="4" width="24" height="32" rx="2" stroke="white" stroke-width="1.5"/>
+            <path d="M16 4v8h16" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M14 22h16M14 27h10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="pdf-opener-label">Design presentation</p>
+            <p class="pdf-opener-title">Universal Bootloader · Generic Design · June 2024</p>
+          </div>
+        </div>
+        <span class="pdf-opener-link">View presentation ↗</span>
+      </a>
+    </div>
+
+    <hr />
+
+    <!-- 6. OUTCOMES -->
+    <div class="section reveal">
+      <p class="section-label">Impact</p>
+      <h2 class="section-heading">What it <em>unlocked</em></h2>
+
+      <div class="outcomes-bento">
+        <div class="o-card">
+          <p class="o-card-num">01</p>
+          <p class="o-card-title">A single global build <em>replacing multiple variants</em></p>
+          <p class="o-card-body">The universal solution replaced a fragmented set of dedicated Sky manufacturing builds with a single bootloader that could ship across any hardware partner, in any market, without modification.</p>
+        </div>
+        <div class="o-card">
+          <p class="o-card-num">02</p>
+          <p class="o-card-title">Critical path cleared <em>for Rogers launch</em></p>
+          <p class="o-card-body">The Rogers North America launch — a business-critical milestone requiring English and French Canadian support simultaneously — was unblocked by the new design, which handled multi-language from a single build.</p>
+        </div>
+        <div class="o-card">
+          <p class="o-card-num">03</p>
+          <p class="o-card-title">Brand-neutral, <em>future-proof</em></p>
+          <p class="o-card-body">By designing a solution that did not rely on Sky's current brand expression, the bootloader can ship unchanged into new markets and on future hardware without requiring a redesign or a new manufacturing build.</p>
+        </div>
+        <div class="o-card">
+          <p class="o-card-num">04</p>
+          <p class="o-card-title">Manufacturing and <em>testing efficiencies</em></p>
+          <p class="o-card-body">Reducing the number of software builds and variants directly reduced manufacturing complexity, cost and testing overhead — a meaningful operational saving at the scale Sky operates.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 7. REFLECTION -->
+    <div class="section reveal">
+      <p class="section-label">Reflection</p>
+      <h2 class="section-heading">What made this <em>different</em></h2>
+      <p class="body-text">Most product design work is reversible. If a UI decision is wrong, you iterate, you push an update, you fix it. The bootloader offered no such safety net. Whatever shipped would be physically embedded in hardware at the factory and could not be changed after the fact.</p>
+      <p class="body-text">That constraint forced a different kind of rigour — not just designing something that worked now, but designing something that would still make sense in five years, on hardware that didn't exist yet, in markets we hadn't entered. The Crazy 8s workshop was valuable precisely because it forced the team to explore the full possibility space before committing, rather than defaulting to the obvious Sky brand expression and discovering its limitations later.</p>
+      <p class="body-text"><strong>The most important design decisions here were the ones we ruled out</strong>, not the ones we chose.</p>
+    </div>
+
+  </div>
+
+  <!-- CASE NAV -->
+  <div class="cs-nav">
+    <a href="cs-sky-go.html">← Previous: Sky Glass / Sky Go</a>
+    <a href="cs-design-system.html">British Gas →</a>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
