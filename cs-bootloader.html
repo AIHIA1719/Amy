@@ -67,6 +67,9 @@
     .two-col-text h3 em { font-style: italic; }
     .two-col-text p { font-size: 16px; color: var(--muted); line-height: 1.8; }
 
+    .img-full { width: calc(100% + 96px); margin-left: -48px; margin-right: -48px; line-height: 0; overflow: hidden; }
+    .img-full img { width: 100%; display: block; }
+
     /* Constraint cards */
     .constraint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 32px 0; }
     .constraint-card { background: var(--bg); padding: 28px 24px; }
@@ -152,8 +155,8 @@
     <div class="section reveal">
       <p class="section-label">The Context</p>
       <h2 class="section-heading">The moment before <em>everything begins</em></h2>
-      <p class="body-text">The bootloader is the first thing a customer ever sees on a Sky device. It runs before the operating system loads, before Sky Glass or EntOS exists from the user's perspective — a narrow window of hardware-level activity that is technically constrained, globally deployed, and permanently baked into the device at the factory.</p>
-      <p class="body-text">Until this project, Sky had a dedicated bootloader build tied to its own manufacturing line. It worked for the existing setup but was neither scalable nor future-proof. As Sky moved to expand its hardware partnerships globally — most critically with Rogers in North America — the brittleness of the existing approach became a critical risk.</p>
+      <p class="body-text">The bootloader is the first thing a customer ever sees on a Sky device. It runs before the operating system loads, before Sky Glass or EntOS exists from the user's perspective, a narrow window of hardware-level activity that is technically constrained, globally deployed, and permanently baked into the device at the factory.</p>
+      <p class="body-text">Until this project, Sky had a dedicated bootloader build tied to its own manufacturing line. It worked for the existing setup but was neither scalable nor future-proof. As Sky moved to expand its hardware partnerships globally, most critically with Rogers in North America, the brittleness of the existing approach became a critical risk.</p>
 
       <div class="callout">
         <p>"The bootloader is built into the hardware at factory level. Whatever we design has to work years from now, on devices we haven't seen yet, in markets we haven't entered."</p>
@@ -166,23 +169,23 @@
     <div class="section reveal">
       <p class="section-label">The Brief</p>
       <h2 class="section-heading">Three problems, <em>one solution</em></h2>
-      <p class="body-text">The brief was deceptively simple: design a universal bootloader. In practice, it meant solving three interconnected problems simultaneously — a brand problem, a scale problem and a technical problem — with a solution that had to work in conditions most design work never considers.</p>
+      <p class="body-text">The brief was deceptively simple: design a universal bootloader. In practice, it meant solving three interconnected problems simultaneously, a brand problem, a scale problem and a technical problem, with a solution that had to work in conditions most design work never considers.</p>
 
       <div class="constraint-grid reveal">
         <div class="constraint-card">
           <p class="constraint-num">01</p>
           <p class="constraint-title">The brand problem</p>
-          <p class="constraint-desc">Sky's new EntOS identity posed a brand encroachment risk with third-party hardware partners. The bootloader could not be overtly tied to Sky's own brand — it needed to feel neutral, or at most, covertly connected for those who knew.</p>
+          <p class="constraint-desc">Sky's new EntOS identity posed a brand encroachment risk with third-party hardware partners. The bootloader could not be overtly tied to Sky's own brand, it needed to feel neutral, or at most, covertly connected for those who knew.</p>
         </div>
         <div class="constraint-card">
           <p class="constraint-num">02</p>
           <p class="constraint-title">The scale problem</p>
-          <p class="constraint-desc">The existing build created a dedicated Sky manufacturing line — one build per device variant, one language set per market. Rogers required English and French Canadian simultaneously. The new solution had to support multiple languages and partners from a single build.</p>
+          <p class="constraint-desc">The existing build created a dedicated Sky manufacturing line, one build per device variant, one language set per market. Rogers required English and French Canadian simultaneously. The new solution had to support multiple languages and partners from a single build.</p>
         </div>
         <div class="constraint-card">
           <p class="constraint-num">03</p>
           <p class="constraint-title">The technical problem</p>
-          <p class="constraint-desc">The bootloader runs under extreme hardware constraints — minimal processing power, no operating system, limited rendering capability. The design had to be simple enough to run on older devices, future-proof enough to ship unchanged for years, and visually coherent across all of them.</p>
+          <p class="constraint-desc">The bootloader runs under extreme hardware constraints, minimal processing power, no operating system, limited rendering capability. The design had to be simple enough to run on older devices, future-proof enough to ship unchanged for years, and visually coherent across all of them.</p>
         </div>
       </div>
     </div>
@@ -216,23 +219,23 @@
       <div style="margin: 32px 0;">
         <div class="competitor-row">
           <span class="competitor-name">Apple TV</span>
-          <span class="competitor-bar">Static logo · Progress bar · Static logo · Setup — total ~35s</span>
+          <span class="competitor-bar">Static logo · Progress bar · Static logo · Setup, total ~35s</span>
         </div>
         <div class="competitor-row">
           <span class="competitor-name">Apple iOS</span>
-          <span class="competitor-bar">Static logo · Middleware screen · Setup — total ~18s</span>
+          <span class="competitor-bar">Static logo · Middleware screen · Setup, total ~18s</span>
         </div>
         <div class="competitor-row">
           <span class="competitor-name">Roku</span>
-          <span class="competitor-bar">Static logo · Animated logo loop · Setup — total ~25s</span>
+          <span class="competitor-bar">Static logo · Animated logo loop · Setup, total ~25s</span>
         </div>
         <div class="competitor-row">
           <span class="competitor-name">Google TV</span>
-          <span class="competitor-bar">Black · Static logo · Animated logo · Black — total ~43s</span>
+          <span class="competitor-bar">Black · Static logo · Animated logo · Black, total ~43s</span>
         </div>
         <div class="competitor-row">
           <span class="competitor-name">Fire TV</span>
-          <span class="competitor-bar">Black · Static logo · Status text · Logo · Animation — total ~3m+</span>
+          <span class="competitor-bar">Black · Static logo · Status text · Logo · Animation, total ~3m+</span>
         </div>
       </div>
 
@@ -245,7 +248,15 @@
     <div class="section reveal">
       <p class="section-label">Concept Design</p>
       <h2 class="section-heading">Six directions, <em>one workshop</em></h2>
-      <p class="body-text">Working with a cross-functional team — Ross, Lorenzo, Hayden, Jack and myself — we ran a Crazy 8s workshop to rapidly generate concept directions before committing to a single approach. Six distinct ideas emerged, each addressing the constraints differently.</p>
+      <p class="body-text">Working with a cross-functional team (Ross, Lorenzo, Hayden, Jack and myself) we ran a Crazy 8s workshop to rapidly generate concept directions before committing to a single approach. Six distinct ideas emerged, each addressing the constraints differently.</p>
+
+      <div class="img-full reveal" style="margin-top: 40px; margin-bottom: 48px;">
+        <img src="assets/bootloader/pdf-page-17.jpg" alt="Crazy 8s workshop sketches from the bootloader concept session" style="width:100%; display:block;" />
+      </div>
+
+      <div class="img-full reveal" style="margin-bottom: 48px;">
+        <img src="assets/bootloader/pdf-page-18.jpg" alt="Six concept directions for the bootloader initial boot screen" style="width:100%; display:block;" />
+      </div>
 
       <div class="concept-grid reveal">
         <div class="concept-card">
@@ -256,7 +267,7 @@
         <div class="concept-card">
           <p class="concept-tag">Concept 02</p>
           <p class="concept-name">RGB Ellipsis</p>
-          <p class="concept-desc">Uses the three primary colours of the light spectrum — which also correspond to the three colours on the remote — to show how Sky forms everything the customer is about to see.</p>
+          <p class="concept-desc">Uses the three primary colours of the light spectrum, which also correspond to the three colours on the remote, to show how Sky forms everything the customer is about to see.</p>
         </div>
         <div class="concept-card">
           <p class="concept-tag">Concept 03</p>
@@ -277,6 +288,24 @@
           <p class="concept-tag">Concept 06</p>
           <p class="concept-name">Languages</p>
           <p class="concept-desc">Embodies Sky's truly global ethos through the use of text in multiple world languages, directly addressing the multi-territory brief and communicating universality from the very first frame.</p>
+        </div>
+      </div>
+
+      <div class="img-full reveal" style="margin-top: 48px; margin-bottom: 2px;">
+        <img src="assets/bootloader/pdf-page-19.jpg" alt="Subsequent boot showing Xumo, Rogers and Sky partner logos" style="width:100%; display:block;" />
+      </div>
+
+      <p class="section-label" style="margin-top: 48px;">Finished Global Bootloaders</p>
+      <p class="body-text">The two finished animations shipped into hardware. The Wake Standby runs on subsequent boots, the Wipe Opening on initial boot.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 32px 0; background: #000;">
+        <div style="background: #000; padding: 0; line-height: 0;">
+          <video src="assets/bootloader/wake-standby.mp4" autoplay loop muted playsinline style="width:100%; display:block;"></video>
+          <p style="font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); padding: 14px 0; text-align: center; line-height: 1;">Wake / Standby</p>
+        </div>
+        <div style="background: #000; padding: 0; line-height: 0;">
+          <video src="assets/bootloader/wipe-opening.mp4" autoplay loop muted playsinline style="width:100%; display:block;"></video>
+          <p style="font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); padding: 14px 0; text-align: center; line-height: 1;">Wipe Opening</p>
         </div>
       </div>
 
@@ -312,7 +341,7 @@
         <div class="o-card">
           <p class="o-card-num">02</p>
           <p class="o-card-title">Critical path cleared <em>for Rogers launch</em></p>
-          <p class="o-card-body">The Rogers North America launch — a business-critical milestone requiring English and French Canadian support simultaneously — was unblocked by the new design, which handled multi-language from a single build.</p>
+          <p class="o-card-body">The Rogers North America launch, a business-critical milestone requiring English and French Canadian support simultaneously, was unblocked by the new design, which handled multi-language from a single build.</p>
         </div>
         <div class="o-card">
           <p class="o-card-num">03</p>
@@ -322,7 +351,7 @@
         <div class="o-card">
           <p class="o-card-num">04</p>
           <p class="o-card-title">Manufacturing and <em>testing efficiencies</em></p>
-          <p class="o-card-body">Reducing the number of software builds and variants directly reduced manufacturing complexity, cost and testing overhead — a meaningful operational saving at the scale Sky operates.</p>
+          <p class="o-card-body">Reducing the number of software builds and variants directly reduced manufacturing complexity, cost and testing overhead, a meaningful operational saving at the scale Sky operates.</p>
         </div>
       </div>
     </div>
@@ -334,7 +363,7 @@
       <p class="section-label">Reflection</p>
       <h2 class="section-heading">What made this <em>different</em></h2>
       <p class="body-text">Most product design work is reversible. If a UI decision is wrong, you iterate, you push an update, you fix it. The bootloader offered no such safety net. Whatever shipped would be physically embedded in hardware at the factory and could not be changed after the fact.</p>
-      <p class="body-text">That constraint forced a different kind of rigour — not just designing something that worked now, but designing something that would still make sense in five years, on hardware that didn't exist yet, in markets we hadn't entered. The Crazy 8s workshop was valuable precisely because it forced the team to explore the full possibility space before committing, rather than defaulting to the obvious Sky brand expression and discovering its limitations later.</p>
+      <p class="body-text">That constraint forced a different kind of rigour, not just designing something that worked now, but designing something that would still make sense in five years, on hardware that didn't exist yet, in markets we hadn't entered. The Crazy 8s workshop was valuable precisely because it forced the team to explore the full possibility space before committing, rather than defaulting to the obvious Sky brand expression and discovering its limitations later.</p>
       <p class="body-text"><strong>The most important design decisions here were the ones we ruled out</strong>, not the ones we chose.</p>
     </div>
 
